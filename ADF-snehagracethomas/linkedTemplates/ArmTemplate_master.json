@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDB_DestinationDatabase'"
 		},
+		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorks2022'"
+		},
 		"LS_SQLServer_assessmentdb_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_SQLServer_assessmentdb'",
@@ -77,10 +81,6 @@
 		"SqlServer4_AdventureWorksDB_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
-		},
-		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorks2022'"
 		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
@@ -150,35 +150,8 @@
 					"AzureSqlDatabase_AdventureWorks2022_connectionString": {
 						"value": "[parameters('AzureSqlDatabase_AdventureWorks2022_connectionString')]"
 					},
-					"LS_SQLServer_assessmentdb_connectionString": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
-					},
-					"LS_SQLServer_assessmentdb_password": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
-					},
-					"LS_SqlServer_Destinationdb_connectionString": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_connectionString')]"
-					},
-					"LS_SqlServer_Destinationdb_password": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_password')]"
-					},
-					"LS_adventureworks_2022_connectionString": {
-						"value": "[parameters('LS_adventureworks_2022_connectionString')]"
-					},
-					"LS_adventureworks_2022_password": {
-						"value": "[parameters('LS_adventureworks_2022_password')]"
-					},
 					"LS_RestService1_employees_properties_typeProperties_url": {
 						"value": "[parameters('LS_RestService1_employees_properties_typeProperties_url')]"
-					},
-					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
-					},
-					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
-					},
-					"LS_adventureworks_2022_properties_typeProperties_userName": {
-						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -197,6 +170,24 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQLServer_assessmentdb_connectionString": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
+					},
+					"LS_SQLServer_assessmentdb_password": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
+					},
+					"LS_SqlServer_Destinationdb_connectionString": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_connectionString')]"
+					},
+					"LS_SqlServer_Destinationdb_password": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_password')]"
+					},
+					"LS_adventureworks_2022_connectionString": {
+						"value": "[parameters('LS_adventureworks_2022_connectionString')]"
+					},
+					"LS_adventureworks_2022_password": {
+						"value": "[parameters('LS_adventureworks_2022_password')]"
 					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
@@ -221,6 +212,15 @@
 					},
 					"SqlServer4_AdventureWorksDB_password": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					},
+					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
+					},
+					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
+					},
+					"LS_adventureworks_2022_properties_typeProperties_userName": {
+						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
 					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"

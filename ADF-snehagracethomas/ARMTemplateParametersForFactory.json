@@ -11,6 +11,9 @@
 		"AzureSqlDB_DestinationDatabase_connectionString": {
 			"value": ""
 		},
+		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
+			"value": ""
+		},
 		"LS_SQLServer_assessmentdb_connectionString": {
 			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
 		},
@@ -51,9 +54,6 @@
 			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
 		},
 		"SqlServer4_AdventureWorksDB_password": {
-			"value": ""
-		},
-		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
 			"value": ""
 		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
