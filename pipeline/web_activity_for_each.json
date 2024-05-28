@@ -94,11 +94,6 @@
 									"mappings": [
 										{
 											"source": {
-												"path": "$['status']"
-											}
-										},
-										{
-											"source": {
 												"path": "$['data']['id']"
 											},
 											"sink": {
