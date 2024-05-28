@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText3_dataflow",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -88,9 +88,10 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> sourceSalesCustomer",
-				"select1 filter(year(OrderDate)==2014) ~> filter1orderdate",
-				"filter1orderdate aggregate(groupBy(OrderDate = month(OrderDate),",
-				"          CustomerID),",
+				"select1 filter(year(OrderMonth)==2014) ~> filter1orderdate",
+				"filter1orderdate aggregate(groupBy(OrderDate = month(OrderMonth),",
+				"          CustomerID,",
+				"          OrderMonth = year(OrderMonth)),",
 				"     TotalDue = sum(TotalDue)) ~> aggregatemonthlysales",
 				"SalesSalesOrderHeader, sourceSalesCustomer join(SalesSalesOrderHeader@CustomerID == sourceSalesCustomer@CustomerID,",
 				"     joinType:'inner',",
@@ -100,7 +101,7 @@
 				"joinCustomertoSalesOrderHeader select(mapColumn(",
 				"          SalesOrderID,",
 				"          RevisionNumber,",
-				"          OrderDate,",
+				"          OrderMonth = OrderDate,",
 				"          DueDate,",
 				"          ShipDate,",
 				"          Status,",
@@ -117,14 +118,14 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"aggregatemonthlysales sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          DepartmentID as string,",
-				"          Name as string,",
-				"          GroupName as string,",
-				"          ModifiedDate as string",
-				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
