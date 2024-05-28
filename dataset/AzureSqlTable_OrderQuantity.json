@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlTable_OrderQuantity",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OrderQuantity"
+		}
+	}
+}
