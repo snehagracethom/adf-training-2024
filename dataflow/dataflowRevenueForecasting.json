@@ -56,6 +56,9 @@
 				},
 				{
 					"name": "sort1"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -168,10 +171,17 @@
 				"          OrderQty,",
 				"          CustomerID,",
 				"          OrderDate = month(OrderDate)),",
-				"     sum_TotalDue = sum(TotalDue)\r",
-				"\r",
-				") ~> aggregate1",
-				"aggregate1 sort(desc(sum_TotalDue, true)) ~> sort1",
+				"     sum_TotalDue = sum(TotalDue)) ~> aggregate1",
+				"select3 sort(desc(sum_TotalDue, true)) ~> sort1",
+				"aggregate1 select(mapColumn(",
+				"          ProductID,",
+				"          OrderQty,",
+				"          CustomerID,",
+				"          OrderMonth = OrderDate,",
+				"          sum_TotalDue",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
 				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
