@@ -10,22 +10,43 @@
 						"type": "DatasetReference"
 					},
 					"name": "SalesSalesOrderHeader"
-				}
-			],
-			"sinks": [],
-			"transformations": [
-				{
-					"name": "cast1orderdate"
 				},
 				{
-					"name": "filter1"
+					"dataset": {
+						"referenceName": "AzureSqlTableSalesCustomer",
+						"type": "DatasetReference"
+					},
+					"name": "sourceSalesCustomer"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3_dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filter1orderdate"
+				},
+				{
+					"name": "aggregatemonthlysales"
+				},
+				{
+					"name": "joinCustomertoSalesOrderHeader"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
 				"          SalesOrderID as integer,",
 				"          RevisionNumber as integer,",
-				"          OrderDate as timestamp,",
+				"          OrderDate as date,",
 				"          DueDate as date,",
 				"          ShipDate as date,",
 				"          Status as integer,",
@@ -54,11 +75,56 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> SalesSalesOrderHeader",
-				"SalesSalesOrderHeader cast(output(",
-				"          OrderDate as date 'yyyy-MM-dd'",
+				"source(output(",
+				"          CustomerID as integer,",
+				"          PersonID as integer,",
+				"          StoreID as integer,",
+				"          TerritoryID as integer,",
+				"          AccountNumber as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
 				"     ),",
-				"     errors: true) ~> cast1orderdate",
-				"cast1orderdate filter(ERROR_FUNCTION('')) ~> filter1"
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> sourceSalesCustomer",
+				"select1 filter(year(OrderDate)==2014) ~> filter1orderdate",
+				"filter1orderdate aggregate(groupBy(OrderDate = month(OrderDate),",
+				"          CustomerID),",
+				"     TotalDue = sum(TotalDue)) ~> aggregatemonthlysales",
+				"SalesSalesOrderHeader, sourceSalesCustomer join(SalesSalesOrderHeader@CustomerID == sourceSalesCustomer@CustomerID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinCustomertoSalesOrderHeader",
+				"joinCustomertoSalesOrderHeader select(mapColumn(",
+				"          SalesOrderID,",
+				"          RevisionNumber,",
+				"          OrderDate,",
+				"          DueDate,",
+				"          ShipDate,",
+				"          Status,",
+				"          OnlineOrderFlag,",
+				"          SalesOrderNumber,",
+				"          PurchaseOrderNumber,",
+				"          AccountNumber = SalesSalesOrderHeader@AccountNumber,",
+				"          CustomerID = SalesSalesOrderHeader@CustomerID,",
+				"          SalesPersonID,",
+				"          SubTotal,",
+				"          TotalDue",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"aggregatemonthlysales sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          DepartmentID as string,",
+				"          Name as string,",
+				"          GroupName as string,",
+				"          ModifiedDate as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
