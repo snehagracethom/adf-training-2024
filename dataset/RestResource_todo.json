@@ -1,0 +1,12 @@
+{
+	"name": "RestResource_todo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_RestService_todo",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
