@@ -1,0 +1,54 @@
+{
+	"name": "SqlServerTable_production_product_destinationdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer_Destinationdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "ProductId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Name",
+				"type": "varchar"
+			},
+			{
+				"name": "MakeFlag",
+				"type": "nchar"
+			},
+			{
+				"name": "Color",
+				"type": "varchar"
+			},
+			{
+				"name": "ListPrice",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "StandardCost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Class",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Style",
+				"type": "nchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Production.Product"
+		}
+	}
+}
