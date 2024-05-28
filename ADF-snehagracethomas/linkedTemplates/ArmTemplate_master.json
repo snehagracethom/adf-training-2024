@@ -86,6 +86,14 @@
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
 		},
+		"LS_RestService_Users_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com/users"
+		},
+		"LS_RestService_todo_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com/todos"
+		},
 		"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
@@ -152,6 +160,12 @@
 					},
 					"LS_RestService1_employees_properties_typeProperties_url": {
 						"value": "[parameters('LS_RestService1_employees_properties_typeProperties_url')]"
+					},
+					"LS_RestService_Users_properties_typeProperties_url": {
+						"value": "[parameters('LS_RestService_Users_properties_typeProperties_url')]"
+					},
+					"LS_RestService_todo_properties_typeProperties_url": {
+						"value": "[parameters('LS_RestService_todo_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -258,6 +272,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "ADF-snehagracethomas_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_2')]"
 			]
 		}
 	]
