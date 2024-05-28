@@ -52,6 +52,12 @@
 					"name": "filter1"
 				},
 				{
+					"name": "select4"
+				},
+				{
+					"name": "sort1"
+				},
+				{
 					"name": "aggregate1"
 				}
 			],
@@ -161,12 +167,26 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 filter(year(OrderDate) == 2014) ~> filter1",
-				"filter1 aggregate(groupBy(OrderDate = month(OrderDate),",
+				"aggregate1 select(mapColumn(",
+				"          OrderMonth = OrderDate,",
 				"          CustomerID,",
 				"          OrderQty,",
-				"          ProductID),",
-				"     Sum_TotalDue = sum(TotalDue)) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"          ProductID,",
+				"          Sum_TotalDue",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"select4 sort(asc(ERROR_FUNCTION(''), true),",
+				"     caseInsensitive: true) ~> sort1",
+				"filter1 aggregate(groupBy(ProductID,",
+				"          OrderQty,",
+				"          CustomerID,",
+				"          OrderDate = month(OrderDate),",
+				"          {} = ERROR_FUNCTION('')),",
+				"     TotalDue = sum(TotalDue)\r",
+				"\r",
+				") ~> aggregate1",
+				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -177,24 +197,11 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          SalesOrderID,",
-				"          RevisionNumber,",
-				"          OrderMonth,",
-				"          DueDate,",
-				"          SalesOrderNumber,",
+				"          OrderDate = OrderMonth,",
 				"          CustomerID,",
-				"          SalesPersonID,",
-				"          SubTotal,",
-				"          TotalDue = Sum_TotalDue,",
-				"          ProductName = Name,",
-				"          ProductNumber,",
-				"          SafetyStockLevel,",
-				"          ReorderPoint,",
-				"          ProductLine,",
 				"          OrderQty,",
 				"          ProductID,",
-				"          LocationID,",
-				"          Quantity",
+				"          Sum_TotalDue",
 				"     )) ~> sink1"
 			]
 		}
