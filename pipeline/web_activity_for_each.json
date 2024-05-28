@@ -94,6 +94,11 @@
 									"mappings": [
 										{
 											"source": {
+												"path": "$['status']"
+											}
+										},
+										{
+											"source": {
 												"path": "$['data']['id']"
 											},
 											"sink": {
@@ -104,28 +109,16 @@
 										{
 											"source": {
 												"path": "$['data']['employee_name']"
-											},
-											"sink": {
-												"name": "name",
-												"type": "String"
 											}
 										},
 										{
 											"source": {
 												"path": "$['data']['employee_salary']"
-											},
-											"sink": {
-												"name": "salary",
-												"type": "Decimal"
 											}
 										},
 										{
 											"source": {
 												"path": "$['data']['employee_age']"
-											},
-											"sink": {
-												"name": "age",
-												"type": "Int32"
 											}
 										},
 										{
@@ -135,6 +128,11 @@
 											"sink": {
 												"name": "profile_image",
 												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['message']"
 											}
 										}
 									]
