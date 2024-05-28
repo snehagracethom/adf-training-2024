@@ -48,7 +48,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Production.Product"
+			"table": "Production_Product"
 		}
 	}
 }

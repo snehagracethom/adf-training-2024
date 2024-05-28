@@ -1,6 +1,7 @@
 {
 	"name": "2nd_azuredb_to_sqldb",
 	"properties": {
+		"description": "copy data from azuresql database from the db adventureworks2022 (tablename: Production.Product) to localsql db destionationdb (tablename: Production_Product)",
 		"activities": [
 			{
 				"name": "Copy data1",
@@ -17,13 +18,13 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select top 100 ProductId, Name, MakeFlag, Color, ListPrice, StandardCost,Class, Style from Production.Product",
+						"sqlReaderQuery": "select top 100 ProductId, Name,ProductNumber, MakeFlag,safetystocklevel from Production.Product",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "SqlServerSink",
-						"preCopyScript": "truncate table Production.Product",
+						"preCopyScript": "truncate table Production_Product",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -57,6 +58,18 @@
 							},
 							{
 								"source": {
+									"name": "ProductNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "ProductNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "MakeFlag",
 									"type": "Boolean",
 									"physicalType": "bit"
@@ -69,70 +82,14 @@
 							},
 							{
 								"source": {
-									"name": "Color",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "safetystocklevel",
+									"type": "Int16",
+									"physicalType": "smallint"
 								},
 								"sink": {
-									"name": "Color",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ListPrice",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								},
-								"sink": {
-									"name": "ListPrice",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								}
-							},
-							{
-								"source": {
-									"name": "StandardCost",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								},
-								"sink": {
-									"name": "StandardCost",
-									"type": "Decimal",
-									"physicalType": "money",
-									"scale": 4,
-									"precision": 19
-								}
-							},
-							{
-								"source": {
-									"name": "Class",
-									"type": "String",
-									"physicalType": "nchar"
-								},
-								"sink": {
-									"name": "Class",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Style",
-									"type": "String",
-									"physicalType": "nchar"
-								},
-								"sink": {
-									"name": "Style",
-									"type": "String",
-									"physicalType": "nchar"
+									"name": "safetystocklevel",
+									"type": "Int32",
+									"physicalType": "int"
 								}
 							}
 						],
