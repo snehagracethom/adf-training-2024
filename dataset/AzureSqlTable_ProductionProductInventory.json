@@ -1,0 +1,51 @@
+{
+	"name": "AzureSqlTable_ProductionProductInventory",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ProductID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LocationID",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Shelf",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bin",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Quantity",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "rowguid",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "Production",
+			"table": "ProductInventory"
+		}
+	}
+}
