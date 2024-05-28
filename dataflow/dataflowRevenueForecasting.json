@@ -1,0 +1,65 @@
+{
+	"name": "dataflowRevenueForecasting",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable_Sales_SalesOrderHeader",
+						"type": "DatasetReference"
+					},
+					"name": "SalesSalesOrderHeader"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "cast1orderdate"
+				},
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesOrderID as integer,",
+				"          RevisionNumber as integer,",
+				"          OrderDate as timestamp,",
+				"          DueDate as date,",
+				"          ShipDate as date,",
+				"          Status as integer,",
+				"          OnlineOrderFlag as boolean,",
+				"          SalesOrderNumber as string,",
+				"          PurchaseOrderNumber as string,",
+				"          AccountNumber as string,",
+				"          CustomerID as integer,",
+				"          SalesPersonID as integer,",
+				"          TerritoryID as integer,",
+				"          BillToAddressID as integer,",
+				"          ShipToAddressID as integer,",
+				"          ShipMethodID as integer,",
+				"          CreditCardID as integer,",
+				"          CreditCardApprovalCode as string,",
+				"          CurrencyRateID as integer,",
+				"          SubTotal as decimal(19,4),",
+				"          TaxAmt as decimal(19,4),",
+				"          Freight as decimal(19,4),",
+				"          TotalDue as decimal(19,4),",
+				"          Comment as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> SalesSalesOrderHeader",
+				"SalesSalesOrderHeader cast(output(",
+				"          OrderDate as date 'yyyy-MM-dd'",
+				"     ),",
+				"     errors: true) ~> cast1orderdate",
+				"cast1orderdate filter(ERROR_FUNCTION('')) ~> filter1"
+			]
+		}
+	}
+}
