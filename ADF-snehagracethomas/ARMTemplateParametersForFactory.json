@@ -1,0 +1,81 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-snehagracethomas"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDB_DestinationDatabase_connectionString": {
+			"value": ""
+		},
+		"LS_SQLServer_assessmentdb_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
+		},
+		"LS_SQLServer_assessmentdb_password": {
+			"value": ""
+		},
+		"LS_SqlServer_Destinationdb_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=destinationdb"
+		},
+		"LS_SqlServer_Destinationdb_password": {
+			"value": ""
+		},
+		"LS_adventureworks_2022_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2022"
+		},
+		"LS_adventureworks_2022_password": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
+		},
+		"SqlServer1_password": {
+			"value": ""
+		},
+		"SqlServer2_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=destinationdb"
+		},
+		"SqlServer2_password": {
+			"value": ""
+		},
+		"SqlServer3_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
+		},
+		"SqlServer3_password": {
+			"value": ""
+		},
+		"SqlServer4_AdventureWorksDB_connectionString": {
+			"value": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
+		},
+		"SqlServer4_AdventureWorksDB_password": {
+			"value": ""
+		},
+		"LS_RestService1_employees_properties_typeProperties_url": {
+			"value": "https://dummy.restapiexample.com/api/v1/employee"
+		},
+		"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"LS_adventureworks_2022_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"SqlServer1_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"SqlServer2_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"SqlServer3_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"value": "sneha"
+		}
+	}
+}
