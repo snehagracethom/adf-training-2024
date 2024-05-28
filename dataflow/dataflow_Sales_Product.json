@@ -81,6 +81,12 @@
 				},
 				{
 					"name": "rank2"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "sort2"
 				}
 			],
 			"scriptLines": [
@@ -159,7 +165,9 @@
 				"     output(rank as long)) ~> rank1",
 				"split1@Others rank(desc(TotalRevenue, true),",
 				"     output(Rank as long)) ~> rank2",
-				"rank1 sink(allowSchemaDrift: true,",
+				"rank1 sort(asc(rank, true)) ~> sort1",
+				"rank2 sort(asc(Rank, true)) ~> sort2",
+				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -169,7 +177,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"rank2 sink(allowSchemaDrift: true,",
+				"sort2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
