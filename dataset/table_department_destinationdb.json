@@ -1,0 +1,36 @@
+{
+	"name": "table_department_destinationdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer_Destinationdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "DepId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "Groupname",
+				"type": "varchar"
+			},
+			{
+				"name": "datemodified",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Department"
+		}
+	}
+}
