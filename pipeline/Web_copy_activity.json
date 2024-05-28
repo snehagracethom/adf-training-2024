@@ -1,0 +1,112 @@
+{
+	"name": "Web_copy_activity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table employee_details",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['data']['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['data']['employee_name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['data']['employee_salary']"
+								},
+								"sink": {
+									"name": "salary",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['data']['employee_age']"
+								},
+								"sink": {
+									"name": "age",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['data']['profile_image']"
+								},
+								"sink": {
+									"name": "profile_image",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RestResource_employees",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SqlServerTable_employee_Details",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-05-23T04:05:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

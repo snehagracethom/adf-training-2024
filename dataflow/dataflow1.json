@@ -1,0 +1,80 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText_USSalescsv",
+						"type": "DatasetReference"
+					},
+					"name": "USASales"
+				},
+				{
+					"dataset": {
+						"referenceName": "Internationalcsv1",
+						"type": "DatasetReference"
+					},
+					"name": "InternationalSales"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Sales_country",
+						"type": "DatasetReference"
+					},
+					"name": "sinkContainer",
+					"description": "Export data to container"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductID as string,",
+				"          Date as string,",
+				"          Zip as string,",
+				"          Units as string,",
+				"          Revenue as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> USASales",
+				"source(output(",
+				"          ProductID as string,",
+				"          Date as string,",
+				"          Zip as string,",
+				"          Units as string,",
+				"          Revenue as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['*.csv']) ~> InternationalSales",
+				"USASales derive(Country = 'USA') ~> derivedColumn1",
+				"derivedColumn1, InternationalSales union(byName: true)~> union1",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          DepartmentID as string,",
+				"          Name as string,",
+				"          GroupName as string,",
+				"          ModifiedDate as string",
+				"     ),",
+				"     partitionFileNames:['sales_country.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkContainer"
+			]
+		}
+	}
+}

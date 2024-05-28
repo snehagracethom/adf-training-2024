@@ -1,0 +1,24 @@
+{
+	"name": "RestResource_employee_foreach",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_RestService1_employees",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"employee_id": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().employee_id",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

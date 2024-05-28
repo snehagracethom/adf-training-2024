@@ -1,0 +1,34 @@
+{
+	"name": "SqlServerTable3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "nchar"
+			},
+			{
+				"name": "Name",
+				"type": "varchar"
+			},
+			{
+				"name": "RollNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Country",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tableadf"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

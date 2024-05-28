@@ -1,0 +1,44 @@
+{
+	"name": "SqlServerTable_tablecountry",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "ProductID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			},
+			{
+				"name": "Zip",
+				"type": "varchar"
+			},
+			{
+				"name": "Units",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Revenue",
+				"type": "varchar"
+			},
+			{
+				"name": "Country",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tablecountry"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

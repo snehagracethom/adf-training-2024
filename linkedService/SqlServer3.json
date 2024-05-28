@@ -1,0 +1,17 @@
+{
+	"name": "SqlServer3",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=SNEHA\\SQLEXPRESS;initial catalog=assessment",
+			"userName": "sneha",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0ZmUzZmMzZS1mMWViLTQ4N2YtOGVmOC02MDg5ZjhmYzg3YjIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

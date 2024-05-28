@@ -1,0 +1,17 @@
+{
+	"name": "LS_SQLServer_assessmentdb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=SNEHA\\SQLEXPRESS;initial catalog=assessment",
+			"userName": "sneha",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmYzQyOThiZi0xMTQ2LTQ4OTYtODEzMC1kY2NmNmU5Y2EyZGEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

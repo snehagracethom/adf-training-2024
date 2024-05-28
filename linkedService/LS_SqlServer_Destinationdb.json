@@ -1,0 +1,17 @@
+{
+	"name": "LS_SqlServer_Destinationdb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=SNEHA\\SQLEXPRESS;initial catalog=destinationdb",
+			"userName": "sneha",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2MmNkNGZmNS0zNzY2LTRhZDMtOTU0Zi1mMjllNzlmZDI4NWQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

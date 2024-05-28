@@ -1,0 +1,16 @@
+{
+	"name": "RestResource_employees",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_RestService1_employees",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "3"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

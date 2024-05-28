@@ -1,0 +1,42 @@
+{
+	"name": "SqlServerTable_employee_Details",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer_Destinationdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "salary",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "age",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "profile_image",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Employee_details"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

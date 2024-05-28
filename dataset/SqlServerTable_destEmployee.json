@@ -1,0 +1,31 @@
+{
+	"name": "SqlServerTable_destEmployee",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer_Destinationdb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "EmpId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Firstname",
+				"type": "varchar"
+			},
+			{
+				"name": "Lastname",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "destEmployee"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

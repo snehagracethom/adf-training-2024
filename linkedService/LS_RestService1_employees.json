@@ -1,0 +1,13 @@
+{
+	"name": "LS_RestService1_employees",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://dummy.restapiexample.com/api/v1/employee",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

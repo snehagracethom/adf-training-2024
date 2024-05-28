@@ -1,0 +1,31 @@
+{
+	"name": "SqlServerTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "EmpId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Firstname",
+				"type": "varchar"
+			},
+			{
+				"name": "Lastname",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "destEmployee"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "ADF-snehagracethomas",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f36778c0-5837-4651-9e34-c7a227aa833c",
+		"tenantId": "9a0dfeee-6342-41ea-b263-eff8283e7a80"
+	}
+}
