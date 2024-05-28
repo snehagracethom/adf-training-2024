@@ -1,0 +1,187 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "USASALES_CSV",
+						"type": "DatasetReference"
+					},
+					"name": "USASALES"
+				},
+				{
+					"dataset": {
+						"referenceName": "international_sales_csv_metadata",
+						"type": "DatasetReference"
+					},
+					"name": "InternationalSales"
+				},
+				{
+					"dataset": {
+						"referenceName": "Products_csv",
+						"type": "DatasetReference"
+					},
+					"name": "Products"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable_tablesales1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable_tablesales2",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "cast2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "rank1"
+				},
+				{
+					"name": "rank2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductID as string,",
+				"          Date as string,",
+				"          Zip as string,",
+				"          Units as string,",
+				"          Revenue as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> USASALES",
+				"source(output(",
+				"          ProductID as string,",
+				"          Date as string,",
+				"          Zip as string,",
+				"          Units as string,",
+				"          Revenue as decimal(10,0),",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> InternationalSales",
+				"source(output(",
+				"          ProductID as string,",
+				"          ProductName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Products",
+				"InternationalSales cast(output(",
+				"          Date as date 'yyyy-MM-dd'",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"USASALES cast(output(",
+				"          Date as date 'yyyy-MM-dd'",
+				"     ),",
+				"     errors: true) ~> cast2",
+				"cast2 derive(Country = 'USA') ~> derivedColumn1",
+				"derivedColumn1, cast1 union(byName: true)~> union1",
+				"union1 aggregate(groupBy(Country,",
+				"          ProductID),",
+				"     TotalRevenue = sum(Revenue)) ~> aggregate1",
+				"aggregate1 derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedColumn2",
+				"derivedColumn2 keyGenerate(output(SNo as long),",
+				"     startAt: 100L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 select(mapColumn(",
+				"          SNo,",
+				"          ProductID,",
+				"          CountryCode,",
+				"          Country,",
+				"          TotalRevenue,",
+				"          Rank",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1, Products join(select1@ProductID == Products@ProductID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          SNo,",
+				"          ProductID = select1@ProductID,",
+				"          CountryCode,",
+				"          Country,",
+				"          ProductName,",
+				"          TotalRevenue,",
+				"          Rank",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 split(TotalRevenue > 500.000,",
+				"     disjoint: false) ~> split1@(Revenue, Others)",
+				"split1@Revenue rank(desc(TotalRevenue, true),",
+				"     output(rank as long)) ~> rank1",
+				"split1@Others rank(desc(TotalRevenue, true),",
+				"     output(Rank as long)) ~> rank2",
+				"rank1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"rank2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+			]
+		}
+	}
+}
