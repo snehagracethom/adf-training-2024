@@ -50,7 +50,7 @@
 				"userProperties": []
 			},
 			{
-				"name": "Get Metadata1_copy1",
+				"name": "Get Metadata2",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -83,7 +83,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1_copy1",
+						"activity": "Get Metadata2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -92,10 +92,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata1_copy1').output.childItems",
+						"value": "@activity('Get Metadata2').output.childItems",
 						"type": "Expression"
 					},
-					"isSequential": false,
 					"activities": [
 						{
 							"name": "Copy data2",
@@ -141,13 +140,7 @@
 							"inputs": [
 								{
 									"referenceName": "InternationSalesCsvfiles_new",
-									"type": "DatasetReference",
-									"parameters": {
-										"filename": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
