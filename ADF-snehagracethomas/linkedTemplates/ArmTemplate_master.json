@@ -78,6 +78,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
 		},
+		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorks2022'"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -143,6 +147,9 @@
 					"AzureSqlDB_DestinationDatabase_connectionString": {
 						"value": "[parameters('AzureSqlDB_DestinationDatabase_connectionString')]"
 					},
+					"AzureSqlDatabase_AdventureWorks2022_connectionString": {
+						"value": "[parameters('AzureSqlDatabase_AdventureWorks2022_connectionString')]"
+					},
 					"LS_SQLServer_assessmentdb_connectionString": {
 						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
 					},
@@ -161,12 +168,6 @@
 					"LS_adventureworks_2022_password": {
 						"value": "[parameters('LS_adventureworks_2022_password')]"
 					},
-					"SqlServer1_connectionString": {
-						"value": "[parameters('SqlServer1_connectionString')]"
-					},
-					"SqlServer1_password": {
-						"value": "[parameters('SqlServer1_password')]"
-					},
 					"LS_RestService1_employees_properties_typeProperties_url": {
 						"value": "[parameters('LS_RestService1_employees_properties_typeProperties_url')]"
 					},
@@ -178,9 +179,6 @@
 					},
 					"LS_adventureworks_2022_properties_typeProperties_userName": {
 						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
-					},
-					"SqlServer1_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -200,6 +198,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SqlServer1_connectionString": {
+						"value": "[parameters('SqlServer1_connectionString')]"
+					},
+					"SqlServer1_password": {
+						"value": "[parameters('SqlServer1_password')]"
+					},
 					"SqlServer2_connectionString": {
 						"value": "[parameters('SqlServer2_connectionString')]"
 					},
@@ -217,6 +221,9 @@
 					},
 					"SqlServer4_AdventureWorksDB_password": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					},
+					"SqlServer1_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
 					"SqlServer2_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer2_properties_typeProperties_userName')]"

@@ -53,6 +53,9 @@
 		"SqlServer4_AdventureWorksDB_password": {
 			"value": ""
 		},
+		"AzureSqlDatabase_AdventureWorks2022_connectionString": {
+			"value": ""
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employee"
 		},
