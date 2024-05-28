@@ -1,0 +1,17 @@
+{
+	"name": "LS_adventureworks_2022",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=SNEHA\\SQLEXPRESS;initial catalog=AdventureWorks2022",
+			"userName": "sneha",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwYjNmM2RiZC04M2RkLTQwYzYtYTUzNC00ZjUxNTliYTlhNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
