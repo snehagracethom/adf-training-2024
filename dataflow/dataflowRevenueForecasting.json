@@ -52,13 +52,7 @@
 					"name": "filter1"
 				},
 				{
-					"name": "select4"
-				},
-				{
 					"name": "aggregate1"
-				},
-				{
-					"name": "sort2"
 				}
 			],
 			"scriptLines": [
@@ -167,15 +161,6 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 filter(year(OrderDate) == 2014) ~> filter1",
-				"sort2 select(mapColumn(",
-				"          OrderMonth = OrderDate,",
-				"          CustomerID,",
-				"          OrderQty,",
-				"          ProductID,",
-				"          Sum_TotalDue",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select4",
 				"filter1 aggregate(groupBy(ProductID,",
 				"          OrderQty,",
 				"          CustomerID,",
@@ -183,8 +168,7 @@
 				"     sum_TotalDue = sum(TotalDue)\r",
 				"\r",
 				") ~> aggregate1",
-				"aggregate1 sort(asc(sum_TotalDue, true)) ~> sort2",
-				"select4 sink(allowSchemaDrift: true,",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -193,14 +177,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          OrderDate = OrderMonth,",
-				"          CustomerID,",
-				"          OrderQty,",
-				"          ProductID,",
-				"          Sum_TotalDue",
-				"     )) ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
