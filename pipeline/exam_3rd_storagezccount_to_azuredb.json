@@ -1,5 +1,5 @@
 {
-	"name": "3rd_storagezccount_to_azuredb",
+	"name": "exam_3rd_storagezccount_to_azuredb",
 	"properties": {
 		"activities": [
 			{
@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {

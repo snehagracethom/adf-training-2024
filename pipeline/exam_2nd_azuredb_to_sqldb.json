@@ -1,5 +1,5 @@
 {
-	"name": "2nd_azuredb_to_sqldb",
+	"name": "exam_2nd_azuredb_to_sqldb",
 	"properties": {
 		"description": "copy data from azuresql database from the db adventureworks2022 (tablename: Production.Product) to localsql db destionationdb (tablename: Production_Product)",
 		"activities": [

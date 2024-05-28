@@ -1,5 +1,5 @@
 {
-	"name": "exam_1st_table1hr_dept_to_table2department",
+	"name": "exam_5th_azuredb_storageacc_json",
 	"properties": {
 		"activities": [
 			{
@@ -16,15 +16,19 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SqlServerSource",
+						"type": "AzureSqlSource",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "SqlServerSink",
-						"preCopyScript": "truncate table Department",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -33,68 +37,51 @@
 							{
 								"source": {
 									"name": "DepartmentID",
-									"type": "Int16",
-									"physicalType": "smallint"
+									"type": "Int16"
 								},
 								"sink": {
-									"name": "DepId",
-									"type": "Int32",
-									"physicalType": "int"
+									"path": "$['DepartmentID']"
 								}
 							},
 							{
 								"source": {
 									"name": "Name",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"type": "String"
 								},
 								"sink": {
-									"name": "name",
-									"type": "String",
-									"physicalType": "varchar"
+									"path": "$['Name']"
 								}
 							},
 							{
 								"source": {
 									"name": "GroupName",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"type": "String"
 								},
 								"sink": {
-									"name": "Groupname",
-									"type": "String",
-									"physicalType": "varchar"
+									"path": "$['GroupName']"
 								}
 							},
 							{
 								"source": {
 									"name": "ModifiedDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "DateTime"
 								},
 								"sink": {
-									"name": "datemodified",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"path": "$['ModifiedDate']"
 								}
 							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
+						]
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "Table_HumanResources_Department",
+						"referenceName": "AzureSqlTable_HumanResources_Dept",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "table_department_destinationdb",
+						"referenceName": "Json1_salesorderdetails",
 						"type": "DatasetReference"
 					}
 				]

@@ -1,0 +1,36 @@
+{
+	"name": "AzureSqlTable_HumanResources_Dept",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DepartmentID",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GroupName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "HumanResources",
+			"table": "Department"
+		}
+	}
+}
