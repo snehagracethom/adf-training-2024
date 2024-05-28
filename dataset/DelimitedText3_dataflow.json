@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "new.csv",
 				"container": "sneha-container"
 			},
 			"columnDelimiter": ",",
