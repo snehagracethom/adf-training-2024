@@ -1244,7 +1244,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Get Metadata1",
+								"activity": "Script1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1283,7 +1283,6 @@
 										},
 										"sink": {
 											"type": "AzureSqlSink",
-											"preCopyScript": "truncate table table_internationalsales",
 											"writeBehavior": "insert",
 											"sqlWriterUseTableLock": false,
 											"disableMetricsCollection": false
@@ -1320,6 +1319,39 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDB_DestinationDatabase",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "truncate table table_internationalsales"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
 				],
 				"policy": {
@@ -1329,6 +1361,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/international_sales_csv_metadata')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]",
 				"[concat(variables('factoryId'), '/datasets/InternationSalesCsvfiles_new')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_table_internationalsales')]"
 			]
