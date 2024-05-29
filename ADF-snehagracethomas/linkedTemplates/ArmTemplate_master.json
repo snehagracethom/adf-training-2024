@@ -184,15 +184,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"LS_SQLServer_assessmentdb_connectionString": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
-					},
-					"LS_SQLServer_assessmentdb_password": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
-					},
-					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -213,6 +204,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQLServer_assessmentdb_connectionString": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
+					},
+					"LS_SQLServer_assessmentdb_password": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
 					},
 					"LS_SqlServer_Destinationdb_connectionString": {
 						"value": "[parameters('LS_SqlServer_Destinationdb_connectionString')]"
@@ -249,6 +246,9 @@
 					},
 					"SqlServer4_AdventureWorksDB_password": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					},
+					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
 					},
 					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
 						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
