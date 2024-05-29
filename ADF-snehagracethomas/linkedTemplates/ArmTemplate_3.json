@@ -556,25 +556,25 @@
 							"name": "cast2"
 						},
 						{
-							"name": "derivedColumn1"
+							"name": "derivedCountry"
 						},
 						{
 							"name": "union1"
 						},
 						{
-							"name": "aggregate1"
+							"name": "totalrevenueaggregate"
 						},
 						{
-							"name": "derivedColumn2"
+							"name": "derivedCountryCode"
 						},
 						{
-							"name": "surrogateKey1"
+							"name": "surrogateKeyID"
 						},
 						{
 							"name": "select1"
 						},
 						{
-							"name": "join1"
+							"name": "joinSalesProducts"
 						},
 						{
 							"name": "select2"
@@ -632,16 +632,16 @@
 						"          Date as date 'yyyy-MM-dd'",
 						"     ),",
 						"     errors: true) ~> cast2",
-						"cast2 derive(Country = 'USA') ~> derivedColumn1",
-						"derivedColumn1, cast1 union(byName: true)~> union1",
+						"cast2 derive(Country = 'USA') ~> derivedCountry",
+						"derivedCountry, cast1 union(byName: true)~> union1",
 						"union1 aggregate(groupBy(Country,",
 						"          ProductID),",
-						"     TotalRevenue = sum(Revenue)) ~> aggregate1",
-						"aggregate1 derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedColumn2",
-						"derivedColumn2 keyGenerate(output(SNo as long),",
+						"     TotalRevenue = sum(Revenue)) ~> totalrevenueaggregate",
+						"totalrevenueaggregate derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedCountryCode",
+						"derivedCountryCode keyGenerate(output(SNo as long),",
 						"     startAt: 100L,",
-						"     stepValue: 1L) ~> surrogateKey1",
-						"surrogateKey1 select(mapColumn(",
+						"     stepValue: 1L) ~> surrogateKeyID",
+						"surrogateKeyID select(mapColumn(",
 						"          SNo,",
 						"          ProductID,",
 						"          CountryCode,",
@@ -654,8 +654,8 @@
 						"     joinType:'inner',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join1",
-						"join1 select(mapColumn(",
+						"     broadcast: 'auto')~> joinSalesProducts",
+						"joinSalesProducts select(mapColumn(",
 						"          SNo,",
 						"          ProductID = select1@ProductID,",
 						"          CountryCode,",
