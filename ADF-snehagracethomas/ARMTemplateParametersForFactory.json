@@ -56,6 +56,9 @@
 		"SqlServer4_AdventureWorksDB_password": {
 			"value": ""
 		},
+		"julyactivity_password": {
+			"value": ""
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employee"
 		},
@@ -84,6 +87,15 @@
 			"value": "sneha"
 		},
 		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"value": "sneha"
+		},
+		"julyactivity_properties_typeProperties_server": {
+			"value": "SNEHA\\SQLEXPRESS"
+		},
+		"julyactivity_properties_typeProperties_database": {
+			"value": "july_activity"
+		},
+		"julyactivity_properties_typeProperties_userName": {
 			"value": "sneha"
 		}
 	}

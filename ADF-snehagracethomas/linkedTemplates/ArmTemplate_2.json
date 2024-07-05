@@ -70,6 +70,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
 		},
+		"julyactivity_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'julyactivity'"
+		},
 		"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
@@ -95,6 +99,18 @@
 			"defaultValue": "sneha"
 		},
 		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
+		},
+		"julyactivity_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "SNEHA\\SQLEXPRESS"
+		},
+		"julyactivity_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "july_activity"
+		},
+		"julyactivity_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
 		}
@@ -299,6 +315,85 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobactivity_excel_1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "file_example_XLS_100.xlsx",
+						"container": "adfjulytraining"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Id",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/julyactivity')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('julyactivity_properties_typeProperties_server')]",
+					"database": "[parameters('julyactivity_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "Windows",
+					"userName": "[parameters('julyactivity_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('julyactivity_password')]"
 					}
 				},
 				"connectVia": {
@@ -1118,111 +1213,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "destEmployee"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer_Destinationdb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable_employee_Details')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_SqlServer_Destinationdb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "name",
-						"type": "varchar"
-					},
-					{
-						"name": "salary",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "age",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "profile_image",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Employee_details"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer_Destinationdb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable_production_product_destinationdb')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_SqlServer_Destinationdb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "ProductId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Name",
-						"type": "varchar"
-					},
-					{
-						"name": "MakeFlag",
-						"type": "nchar"
-					},
-					{
-						"name": "Color",
-						"type": "varchar"
-					},
-					{
-						"name": "ListPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "StandardCost",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Class",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Style",
-						"type": "nchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Production_Product"
 				}
 			},
 			"dependsOn": [

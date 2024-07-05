@@ -82,6 +82,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
 		},
+		"julyactivity_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'julyactivity'"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -119,6 +123,18 @@
 			"defaultValue": "sneha"
 		},
 		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
+		},
+		"julyactivity_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "SNEHA\\SQLEXPRESS"
+		},
+		"julyactivity_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "july_activity"
+		},
+		"julyactivity_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
 		}
@@ -2065,6 +2081,11 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Date": {
+						"type": "String"
+					}
 				},
 				"annotations": [],
 				"lastPublishTime": "2024-05-23T05:47:58Z"
@@ -5202,6 +5223,241 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_blob_sql_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table july1",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "blobactivity_excel_1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "julyexcel",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "julyexcel",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Date",
+							"value": {
+								"value": "@activity('Lookup1').output.firstRow.Date",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Date": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/blobactivity_excel_1')]",
+				"[concat(variables('factoryId'), '/datasets/julyexcel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobactivity_excel_1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "file_example_XLS_100.xlsx",
+						"container": "adfjulytraining"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Id",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/julyactivity')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('julyactivity_properties_typeProperties_server')]",
+					"database": "[parameters('julyactivity_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "Windows",
+					"userName": "[parameters('julyactivity_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('julyactivity_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/julyexcel')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "julyactivity",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "july1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/julyactivity')]"
 			]
 		}
 	]

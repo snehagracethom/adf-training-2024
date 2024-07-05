@@ -82,6 +82,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
 		},
+		"julyactivity_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'julyactivity'"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -119,6 +123,18 @@
 			"defaultValue": "sneha"
 		},
 		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
+		},
+		"julyactivity_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "SNEHA\\SQLEXPRESS"
+		},
+		"julyactivity_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "july_activity"
+		},
+		"julyactivity_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
 		},
@@ -247,6 +263,9 @@
 					"SqlServer4_AdventureWorksDB_password": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
 					},
+					"julyactivity_password": {
+						"value": "[parameters('julyactivity_password')]"
+					},
 					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
 					},
@@ -267,6 +286,15 @@
 					},
 					"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]"
+					},
+					"julyactivity_properties_typeProperties_server": {
+						"value": "[parameters('julyactivity_properties_typeProperties_server')]"
+					},
+					"julyactivity_properties_typeProperties_database": {
+						"value": "[parameters('julyactivity_properties_typeProperties_database')]"
+					},
+					"julyactivity_properties_typeProperties_userName": {
+						"value": "[parameters('julyactivity_properties_typeProperties_userName')]"
 					}
 				}
 			},
