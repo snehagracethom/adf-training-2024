@@ -110,6 +110,10 @@
 			"type": "string",
 			"defaultValue": "sneha"
 		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.thecatapi.com/v1/images/search"
+		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
@@ -182,6 +186,9 @@
 					},
 					"LS_RestService_todo_properties_typeProperties_url": {
 						"value": "[parameters('LS_RestService_todo_properties_typeProperties_url')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					}
 				}
 			},
