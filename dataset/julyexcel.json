@@ -1,0 +1,16 @@
+{
+	"name": "julyexcel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "julyactivity",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "july1"
+		}
+	}
+}

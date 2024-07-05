@@ -1,0 +1,50 @@
+{
+	"name": "blobactivity_excel_1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "file_example_XLS_100.xlsx",
+				"container": "adfjulytraining"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "First Name",
+				"type": "String"
+			},
+			{
+				"name": "Last Name",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "Age",
+				"type": "String"
+			},
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "Id",
+				"type": "String"
+			}
+		]
+	}
+}
