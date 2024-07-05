@@ -1,0 +1,28 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"Authorization": "Bearer BQA66cg6cfXXtY71FS-L_mlc3bRUiJtJXln95nyv4N8xtyBJWELjYC5-bPlTKLVtEWvLju8d-Ed1n19vETss82xP9Yx3UE8c9TvQ1GRNmRUKa_Dh5mI"
+					},
+					"url": "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
