@@ -1,0 +1,12 @@
+{
+	"name": "spotify_playlist",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService_spotifyplaylist",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
