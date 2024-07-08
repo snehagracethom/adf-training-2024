@@ -1,5 +1,5 @@
 {
-	"name": "ppll",
+	"name": "pipeline6",
 	"properties": {
 		"activities": [
 			{
@@ -102,8 +102,6 @@
 			{
 				"name": "Copy data1",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set variable3",
@@ -161,23 +159,6 @@
 				]
 			}
 		],
-		"variables": {
-			"query": {
-				"type": "String"
-			},
-			"query1": {
-				"type": "String"
-			},
-			"q2": {
-				"type": "String"
-			},
-			"Sourcequery": {
-				"type": "String"
-			},
-			"SalesOrderDetailsId": {
-				"type": "String"
-			}
-		},
 		"annotations": []
 	}
 }
