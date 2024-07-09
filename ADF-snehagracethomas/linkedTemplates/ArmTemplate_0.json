@@ -33,7 +33,11 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://api.thecatapi.com/v1/images/search"
+			"defaultValue": "https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=beng"
+		},
+		"RestService_spotifyplaylist_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n"
 		}
 	},
 	"variables": {
@@ -252,6 +256,21 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestService_spotifyplaylist')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestService_spotifyplaylist_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -285,7 +304,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "DueByCutomer"
+					"table": "bakery"
 				}
 			},
 			"dependsOn": [
@@ -402,6 +421,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "activity2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable6')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesDetailsJoin"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTableSalesCustomer')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -492,225 +553,6 @@
 				"typeProperties": {
 					"schema": "HumanResources",
 					"table": "Department"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_OrderQuantity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDB_DestinationDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "OrderQuantity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_ProductionProduct')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MakeFlag",
-						"type": "bit"
-					},
-					{
-						"name": "FinishedGoodsFlag",
-						"type": "bit"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SafetyStockLevel",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "ReorderPoint",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "StandardCost",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "ListPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SizeUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "WeightUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "Weight",
-						"type": "decimal",
-						"precision": 8,
-						"scale": 2
-					},
-					{
-						"name": "DaysToManufacture",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductLine",
-						"type": "nchar"
-					},
-					{
-						"name": "Class",
-						"type": "nchar"
-					},
-					{
-						"name": "Style",
-						"type": "nchar"
-					},
-					{
-						"name": "ProductSubcategoryID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductModelID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SellStartDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "SellEndDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "DiscontinuedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Production",
-					"table": "Product"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_ProductionProductInventory')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "LocationID",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "Shelf",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Bin",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "Quantity",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Production",
-					"table": "ProductInventory"
 				}
 			},
 			"dependsOn": [

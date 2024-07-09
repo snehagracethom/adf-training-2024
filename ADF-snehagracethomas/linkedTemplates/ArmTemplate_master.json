@@ -112,7 +112,11 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://api.thecatapi.com/v1/images/search"
+			"defaultValue": "https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=beng"
+		},
+		"RestService_spotifyplaylist_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n"
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"type": "string",
@@ -189,6 +193,9 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"RestService_spotifyplaylist_properties_typeProperties_url": {
+						"value": "[parameters('RestService_spotifyplaylist_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -264,15 +271,6 @@
 					"SqlServer3_password": {
 						"value": "[parameters('SqlServer3_password')]"
 					},
-					"SqlServer4_AdventureWorksDB_connectionString": {
-						"value": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]"
-					},
-					"SqlServer4_AdventureWorksDB_password": {
-						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
-					},
-					"julyactivity_password": {
-						"value": "[parameters('julyactivity_password')]"
-					},
 					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
 					},
@@ -290,18 +288,6 @@
 					},
 					"SqlServer3_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
-					},
-					"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]"
-					},
-					"julyactivity_properties_typeProperties_server": {
-						"value": "[parameters('julyactivity_properties_typeProperties_server')]"
-					},
-					"julyactivity_properties_typeProperties_database": {
-						"value": "[parameters('julyactivity_properties_typeProperties_database')]"
-					},
-					"julyactivity_properties_typeProperties_userName": {
-						"value": "[parameters('julyactivity_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -322,6 +308,27 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SqlServer4_AdventureWorksDB_connectionString": {
+						"value": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]"
+					},
+					"SqlServer4_AdventureWorksDB_password": {
+						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					},
+					"julyactivity_password": {
+						"value": "[parameters('julyactivity_password')]"
+					},
+					"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]"
+					},
+					"julyactivity_properties_typeProperties_server": {
+						"value": "[parameters('julyactivity_properties_typeProperties_server')]"
+					},
+					"julyactivity_properties_typeProperties_database": {
+						"value": "[parameters('julyactivity_properties_typeProperties_database')]"
+					},
+					"julyactivity_properties_typeProperties_userName": {
+						"value": "[parameters('julyactivity_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -347,6 +354,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "ADF-snehagracethomas_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_4')]"
 			]
 		}
 	]

@@ -112,7 +112,11 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://api.thecatapi.com/v1/images/search"
+			"defaultValue": "https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=beng"
+		},
+		"RestService_spotifyplaylist_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n"
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"type": "string",
@@ -2198,6 +2202,240 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline4')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_bakery",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_bakery')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_concat_copydata')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable_Sales_SalesOrderHeader",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Id",
+							"value": {
+								"value": "43743",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "q1",
+							"value": {
+								"value": "SELECT o.SalesOrderID, o.OrderDate, c.FirstName, c.LastName, p.Name AS ProductName, s.OrderQty, s.LineTotal\nFROM Sales.SalesOrderHeader o\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable3",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "q2",
+							"value": {
+								"value": "@concat('JOIN Sales.SalesOrderDetail s ON o.SalesOrderID = s.SalesOrderID\nJOIN Person.Person c ON o.CustomerID = c.BusinessEntityID\nJOIN Production.Product p ON s.ProductID = p.ProductID where o.SalesOrderId =', variables('Id'))\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set variable3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat(variables('q1'),variables('q2'))",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "truncate table SalesDetailsJoin",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlTable_Sales_SalesOrderHeader",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable6",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Id": {
+						"type": "String"
+					},
+					"q1": {
+						"type": "String"
+					},
+					"q2": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_Sales_SalesOrderHeader')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable6')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/web_activity_for_each')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2404,7 +2642,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "DueByCutomer"
+					"table": "bakery"
 				}
 			},
 			"dependsOn": [
@@ -2518,6 +2756,48 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "activity2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable6')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SalesDetailsJoin"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorks2022')]"
 			]
 		},
 		{
@@ -3792,6 +4072,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ply.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Json1_salesorderdetails')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3810,6 +4114,468 @@
 					}
 				},
 				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ply.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"collaborative": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"external_urls": {
+							"type": "object",
+							"properties": {
+								"spotify": {
+									"type": "string"
+								}
+							}
+						},
+						"followers": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"href": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"images": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"height": {
+										"type": "null"
+									},
+									"url": {
+										"type": "string"
+									},
+									"width": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"name": {
+							"type": "string"
+						},
+						"owner": {
+							"type": "object",
+							"properties": {
+								"display_name": {
+									"type": "string"
+								},
+								"external_urls": {
+									"type": "object",
+									"properties": {
+										"spotify": {
+											"type": "string"
+										}
+									}
+								},
+								"href": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								},
+								"type": {
+									"type": "string"
+								},
+								"uri": {
+									"type": "string"
+								}
+							}
+						},
+						"primary_color": {
+							"type": "null"
+						},
+						"public": {
+							"type": "boolean"
+						},
+						"snapshot_id": {
+							"type": "string"
+						},
+						"tracks": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "string"
+								},
+								"items": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"added_at": {
+												"type": "string"
+											},
+											"added_by": {
+												"type": "object",
+												"properties": {
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"type": {
+														"type": "string"
+													},
+													"uri": {
+														"type": "string"
+													}
+												}
+											},
+											"is_local": {
+												"type": "boolean"
+											},
+											"primary_color": {
+												"type": "null"
+											},
+											"track": {
+												"type": "object",
+												"properties": {
+													"preview_url": {
+														"type": "string"
+													},
+													"available_markets": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"explicit": {
+														"type": "boolean"
+													},
+													"type": {
+														"type": "string"
+													},
+													"episode": {
+														"type": "boolean"
+													},
+													"track": {
+														"type": "boolean"
+													},
+													"album": {
+														"type": "object",
+														"properties": {
+															"available_markets": {
+																"type": "array",
+																"items": {
+																	"type": "string"
+																}
+															},
+															"type": {
+																"type": "string"
+															},
+															"album_type": {
+																"type": "string"
+															},
+															"href": {
+																"type": "string"
+															},
+															"id": {
+																"type": "string"
+															},
+															"images": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"url": {
+																			"type": "string"
+																		},
+																		"width": {
+																			"type": "integer"
+																		},
+																		"height": {
+																			"type": "integer"
+																		}
+																	}
+																}
+															},
+															"name": {
+																"type": "string"
+															},
+															"release_date": {
+																"type": "string"
+															},
+															"release_date_precision": {
+																"type": "string"
+															},
+															"uri": {
+																"type": "string"
+															},
+															"artists": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"external_urls": {
+																			"type": "object",
+																			"properties": {
+																				"spotify": {
+																					"type": "string"
+																				}
+																			}
+																		},
+																		"href": {
+																			"type": "string"
+																		},
+																		"id": {
+																			"type": "string"
+																		},
+																		"name": {
+																			"type": "string"
+																		},
+																		"type": {
+																			"type": "string"
+																		},
+																		"uri": {
+																			"type": "string"
+																		}
+																	}
+																}
+															},
+															"external_urls": {
+																"type": "object",
+																"properties": {
+																	"spotify": {
+																		"type": "string"
+																	}
+																}
+															},
+															"total_tracks": {
+																"type": "integer"
+															}
+														}
+													},
+													"artists": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"external_urls": {
+																	"type": "object",
+																	"properties": {
+																		"spotify": {
+																			"type": "string"
+																		}
+																	}
+																},
+																"href": {
+																	"type": "string"
+																},
+																"id": {
+																	"type": "string"
+																},
+																"name": {
+																	"type": "string"
+																},
+																"type": {
+																	"type": "string"
+																},
+																"uri": {
+																	"type": "string"
+																}
+															}
+														}
+													},
+													"disc_number": {
+														"type": "integer"
+													},
+													"track_number": {
+														"type": "integer"
+													},
+													"duration_ms": {
+														"type": "integer"
+													},
+													"external_ids": {
+														"type": "object",
+														"properties": {
+															"isrc": {
+																"type": "string"
+															}
+														}
+													},
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"name": {
+														"type": "string"
+													},
+													"popularity": {
+														"type": "integer"
+													},
+													"uri": {
+														"type": "string"
+													},
+													"is_local": {
+														"type": "boolean"
+													}
+												}
+											},
+											"video_thumbnail": {
+												"type": "object",
+												"properties": {
+													"url": {
+														"type": "null"
+													}
+												}
+											}
+										}
+									}
+								},
+								"limit": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "null"
+								},
+								"offset": {
+									"type": "integer"
+								},
+								"previous": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"type": {
+							"type": "string"
+						},
+						"uri": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sample.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"ppu": {
+							"type": "number"
+						},
+						"batters": {
+							"type": "object",
+							"properties": {
+								"batter": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"type": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"topping": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
@@ -4810,6 +5576,52 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/spotify_playlist')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestService_spotifyplaylist",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestService_spotifyplaylist')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/spotifyplaylist')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "playlist.csv",
+						"container": "adfjulytraining"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/table_department_destinationdb')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -5015,6 +5827,21 @@
 				"type": "RestService",
 				"typeProperties": {
 					"url": "[parameters('RestService1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestService_spotifyplaylist')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestService_spotifyplaylist_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
 				}
@@ -5658,6 +6485,81 @@
 				"[concat(variables('factoryId'), '/datasets/Products_csv')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_tablesales1')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable_tablesales2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_bakery')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Json3",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flatten1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          id as string,",
+						"          type as string,",
+						"          name as string,",
+						"          ppu as double,",
+						"          batters as (batter as (id as string, type as string)[]),",
+						"          topping as (id as string, type as string)[]",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'arrayOfDocuments') ~> source1",
+						"source1 foldDown(unrollMultiple(batters.batter,topping),",
+						"     mapColumn(",
+						"          id,",
+						"          type,",
+						"          name,",
+						"          ppu,",
+						"          batters_id = batters.batter.id,",
+						"          batters_type = batters.batter.type,",
+						"          topping_id = topping.id,",
+						"          topping_type = topping.type",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flatten1",
+						"flatten1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json3')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
 		},
 		{
