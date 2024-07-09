@@ -44,7 +44,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "SalesOrderDetailsId",
+					"variableName": "Id",
 					"value": {
 						"value": "43743",
 						"type": "Expression"
@@ -68,9 +68,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "query1",
+					"variableName": "q1",
 					"value": {
-						"value": "SELECT o.SalesOrderID, o.OrderDate, c.FirstName, c.LastName, p.Name AS ProductName, s.OrderQty, s.LineTotal\nFROM Sales.SalesOrderHeader o",
+						"value": "SELECT o.SalesOrderID, o.OrderDate, c.FirstName, c.LastName, p.Name AS ProductName, s.OrderQty, s.LineTotal\nFROM Sales.SalesOrderHeader o\n",
 						"type": "Expression"
 					}
 				}
@@ -94,7 +94,7 @@
 				"typeProperties": {
 					"variableName": "q2",
 					"value": {
-						"value": "@JOIN Sales.SalesOrderDetail s ON o.SalesOrderID = s.SalesOrderID\nJOIN Person.Person c ON o.CustomerID = c.BusinessEntityID\nJOIN Production.Product p ON s.ProductID = p.ProductID where o.SalesOrderId = variables('SalesOrderDetailsId')",
+						"value": "@concat('JOIN Sales.SalesOrderDetail s ON o.SalesOrderID = s.SalesOrderID\nJOIN Person.Person c ON o.CustomerID = c.BusinessEntityID\nJOIN Production.Product p ON s.ProductID = p.ProductID where o.SalesOrderId =', variables('Id'))\n",
 						"type": "Expression"
 					}
 				}
@@ -122,7 +122,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(variables('query1'),variables('q2'))",
+							"value": "@concat(variables('q1'),variables('q2'))",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -130,6 +130,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table SalesDetailsJoin",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -159,6 +160,17 @@
 				]
 			}
 		],
+		"variables": {
+			"Id": {
+				"type": "String"
+			},
+			"q1": {
+				"type": "String"
+			},
+			"q2": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
