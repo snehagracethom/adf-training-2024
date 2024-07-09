@@ -1,5 +1,5 @@
 {
-	"name": "pipeline6",
+	"name": "pl_concat_copydata",
 	"properties": {
 		"activities": [
 			{
