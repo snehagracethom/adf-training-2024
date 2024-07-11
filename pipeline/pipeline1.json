@@ -54,6 +54,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "jerin_activities"
+		},
 		"annotations": []
 	}
 }
