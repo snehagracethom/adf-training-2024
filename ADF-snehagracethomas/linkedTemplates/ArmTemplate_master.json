@@ -265,12 +265,6 @@
 					"SqlServer2_password": {
 						"value": "[parameters('SqlServer2_password')]"
 					},
-					"SqlServer3_connectionString": {
-						"value": "[parameters('SqlServer3_connectionString')]"
-					},
-					"SqlServer3_password": {
-						"value": "[parameters('SqlServer3_password')]"
-					},
 					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
 					},
@@ -285,9 +279,6 @@
 					},
 					"SqlServer2_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer2_properties_typeProperties_userName')]"
-					},
-					"SqlServer3_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -309,6 +300,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SqlServer3_connectionString": {
+						"value": "[parameters('SqlServer3_connectionString')]"
+					},
+					"SqlServer3_password": {
+						"value": "[parameters('SqlServer3_password')]"
+					},
 					"SqlServer4_AdventureWorksDB_connectionString": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]"
 					},
@@ -317,6 +314,9 @@
 					},
 					"julyactivity_password": {
 						"value": "[parameters('julyactivity_password')]"
+					},
+					"SqlServer3_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
 					},
 					"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]"
