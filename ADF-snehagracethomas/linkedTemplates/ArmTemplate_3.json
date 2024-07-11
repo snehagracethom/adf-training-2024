@@ -279,6 +279,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "kjc_project"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -473,6 +476,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "kjc_project"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -572,6 +578,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "kjc_project"
 				},
 				"annotations": []
 			},
