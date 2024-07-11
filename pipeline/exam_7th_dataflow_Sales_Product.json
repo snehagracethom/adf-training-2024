@@ -54,6 +54,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "kjc_project"
+		},
 		"annotations": []
 	}
 }
