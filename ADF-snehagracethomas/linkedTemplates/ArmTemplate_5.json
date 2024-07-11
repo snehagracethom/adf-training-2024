@@ -66,6 +66,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "jerin_activities"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -301,6 +304,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "jerin_activities"
 				},
 				"annotations": [],
 				"lastPublishTime": "2024-05-23T05:47:58Z"
