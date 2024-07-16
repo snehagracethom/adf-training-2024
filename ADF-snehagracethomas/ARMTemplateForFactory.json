@@ -350,6 +350,8 @@
 					{
 						"name": "SendEmail",
 						"type": "WebActivity",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Stored procedure1",
