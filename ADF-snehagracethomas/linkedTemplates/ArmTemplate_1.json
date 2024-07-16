@@ -13,626 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_HumanResources_Dept')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "DepartmentID",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "GroupName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "HumanResources",
-					"table": "Department"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_OrderQuantity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDB_DestinationDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "OrderQuantity"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_ProductionProduct')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MakeFlag",
-						"type": "bit"
-					},
-					{
-						"name": "FinishedGoodsFlag",
-						"type": "bit"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SafetyStockLevel",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "ReorderPoint",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "StandardCost",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "ListPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SizeUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "WeightUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "Weight",
-						"type": "decimal",
-						"precision": 8,
-						"scale": 2
-					},
-					{
-						"name": "DaysToManufacture",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductLine",
-						"type": "nchar"
-					},
-					{
-						"name": "Class",
-						"type": "nchar"
-					},
-					{
-						"name": "Style",
-						"type": "nchar"
-					},
-					{
-						"name": "ProductSubcategoryID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductModelID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SellStartDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "SellEndDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "DiscontinuedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Production",
-					"table": "Product"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_ProductionProductInventory')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "LocationID",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "Shelf",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Bin",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "Quantity",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Production",
-					"table": "ProductInventory"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_SalesORderDetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "SalesOrderID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SalesOrderDetailID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CarrierTrackingNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "OrderQty",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SpecialOfferID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "UnitPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "UnitPriceDiscount",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "LineTotal",
-						"type": "decimal",
-						"precision": 38,
-						"scale": 6
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Sales",
-					"table": "SalesOrderDetail"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_Sales_SalesOrderHeader')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "SalesOrderID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "RevisionNumber",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "OrderDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "DueDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ShipDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Status",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "OnlineOrderFlag",
-						"type": "bit"
-					},
-					{
-						"name": "SalesOrderNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PurchaseOrderNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AccountNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SalesPersonID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TerritoryID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "BillToAddressID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ShipToAddressID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ShipMethodID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CreditCardID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CreditCardApprovalCode",
-						"type": "varchar"
-					},
-					{
-						"name": "CurrencyRateID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SubTotal",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "TaxAmt",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Freight",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "TotalDue",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Comment",
-						"type": "nvarchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Sales",
-					"table": "SalesOrderHeader"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_adventureworks_production_product')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorks2022",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductNumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MakeFlag",
-						"type": "bit"
-					},
-					{
-						"name": "FinishedGoodsFlag",
-						"type": "bit"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SafetyStockLevel",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "ReorderPoint",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "StandardCost",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "ListPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SizeUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "WeightUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "Weight",
-						"type": "decimal",
-						"precision": 8,
-						"scale": 2
-					},
-					{
-						"name": "DaysToManufacture",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductLine",
-						"type": "nchar"
-					},
-					{
-						"name": "Class",
-						"type": "nchar"
-					},
-					{
-						"name": "Style",
-						"type": "nchar"
-					},
-					{
-						"name": "ProductSubcategoryID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductModelID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SellStartDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "SellEndDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "DiscontinuedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "Production",
-					"table": "Product"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_table_internationalsales')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -712,6 +92,73 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "tablesales2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_DestDb_Stage_StudentData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "StudentID",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentCode",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentName",
+						"type": "varchar"
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "Language",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Maths",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Physics",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Chemistry",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ComputerScience",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "StageCreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "StudentData"
 				}
 			},
 			"dependsOn": []
@@ -1184,6 +631,559 @@
 						"type": "String"
 					}
 				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ply.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_salesorderdetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "salesorderdetails.json",
+						"container": "snehagracethomas-container"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ply.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"collaborative": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"external_urls": {
+							"type": "object",
+							"properties": {
+								"spotify": {
+									"type": "string"
+								}
+							}
+						},
+						"followers": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"href": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"images": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"height": {
+										"type": "null"
+									},
+									"url": {
+										"type": "string"
+									},
+									"width": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"name": {
+							"type": "string"
+						},
+						"owner": {
+							"type": "object",
+							"properties": {
+								"display_name": {
+									"type": "string"
+								},
+								"external_urls": {
+									"type": "object",
+									"properties": {
+										"spotify": {
+											"type": "string"
+										}
+									}
+								},
+								"href": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								},
+								"type": {
+									"type": "string"
+								},
+								"uri": {
+									"type": "string"
+								}
+							}
+						},
+						"primary_color": {
+							"type": "null"
+						},
+						"public": {
+							"type": "boolean"
+						},
+						"snapshot_id": {
+							"type": "string"
+						},
+						"tracks": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "string"
+								},
+								"items": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"added_at": {
+												"type": "string"
+											},
+											"added_by": {
+												"type": "object",
+												"properties": {
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"type": {
+														"type": "string"
+													},
+													"uri": {
+														"type": "string"
+													}
+												}
+											},
+											"is_local": {
+												"type": "boolean"
+											},
+											"primary_color": {
+												"type": "null"
+											},
+											"track": {
+												"type": "object",
+												"properties": {
+													"preview_url": {
+														"type": "string"
+													},
+													"available_markets": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"explicit": {
+														"type": "boolean"
+													},
+													"type": {
+														"type": "string"
+													},
+													"episode": {
+														"type": "boolean"
+													},
+													"track": {
+														"type": "boolean"
+													},
+													"album": {
+														"type": "object",
+														"properties": {
+															"available_markets": {
+																"type": "array",
+																"items": {
+																	"type": "string"
+																}
+															},
+															"type": {
+																"type": "string"
+															},
+															"album_type": {
+																"type": "string"
+															},
+															"href": {
+																"type": "string"
+															},
+															"id": {
+																"type": "string"
+															},
+															"images": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"url": {
+																			"type": "string"
+																		},
+																		"width": {
+																			"type": "integer"
+																		},
+																		"height": {
+																			"type": "integer"
+																		}
+																	}
+																}
+															},
+															"name": {
+																"type": "string"
+															},
+															"release_date": {
+																"type": "string"
+															},
+															"release_date_precision": {
+																"type": "string"
+															},
+															"uri": {
+																"type": "string"
+															},
+															"artists": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"external_urls": {
+																			"type": "object",
+																			"properties": {
+																				"spotify": {
+																					"type": "string"
+																				}
+																			}
+																		},
+																		"href": {
+																			"type": "string"
+																		},
+																		"id": {
+																			"type": "string"
+																		},
+																		"name": {
+																			"type": "string"
+																		},
+																		"type": {
+																			"type": "string"
+																		},
+																		"uri": {
+																			"type": "string"
+																		}
+																	}
+																}
+															},
+															"external_urls": {
+																"type": "object",
+																"properties": {
+																	"spotify": {
+																		"type": "string"
+																	}
+																}
+															},
+															"total_tracks": {
+																"type": "integer"
+															}
+														}
+													},
+													"artists": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"external_urls": {
+																	"type": "object",
+																	"properties": {
+																		"spotify": {
+																			"type": "string"
+																		}
+																	}
+																},
+																"href": {
+																	"type": "string"
+																},
+																"id": {
+																	"type": "string"
+																},
+																"name": {
+																	"type": "string"
+																},
+																"type": {
+																	"type": "string"
+																},
+																"uri": {
+																	"type": "string"
+																}
+															}
+														}
+													},
+													"disc_number": {
+														"type": "integer"
+													},
+													"track_number": {
+														"type": "integer"
+													},
+													"duration_ms": {
+														"type": "integer"
+													},
+													"external_ids": {
+														"type": "object",
+														"properties": {
+															"isrc": {
+																"type": "string"
+															}
+														}
+													},
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"name": {
+														"type": "string"
+													},
+													"popularity": {
+														"type": "integer"
+													},
+													"uri": {
+														"type": "string"
+													},
+													"is_local": {
+														"type": "boolean"
+													}
+												}
+											},
+											"video_thumbnail": {
+												"type": "object",
+												"properties": {
+													"url": {
+														"type": "null"
+													}
+												}
+											}
+										}
+									}
+								},
+								"limit": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "null"
+								},
+								"offset": {
+									"type": "integer"
+								},
+								"previous": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"type": {
+							"type": "string"
+						},
+						"uri": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sample.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"ppu": {
+							"type": "number"
+						},
+						"batters": {
+							"type": "object",
+							"properties": {
+								"batter": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"type": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"topping": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Products_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Products.csv",
+						"container": "sneha-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "ProductName",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestService1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
 			},
 			"dependsOn": []
 		}

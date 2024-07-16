@@ -52,6 +52,28 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer2'"
 		},
+		"SqlServer3_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer3'",
+			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
+		},
+		"SqlServer3_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer3'"
+		},
+		"SqlServer4_AdventureWorksDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer4_AdventureWorksDB'",
+			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
+		},
+		"SqlServer4_AdventureWorksDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
+		},
+		"julyactivity_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'julyactivity'"
+		},
 		"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
@@ -71,565 +93,32 @@
 		"SqlServer2_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
+		},
+		"SqlServer3_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
+		},
+		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
+		},
+		"julyactivity_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "SNEHA\\SQLEXPRESS"
+		},
+		"julyactivity_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "july_activity"
+		},
+		"julyactivity_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sneha"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/Json1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "ply.json",
-						"container": "adfjulytraining"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json1_salesorderdetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "salesorderdetails.json",
-						"container": "snehagracethomas-container"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "ply.json",
-						"container": "adfjulytraining"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"collaborative": {
-							"type": "boolean"
-						},
-						"description": {
-							"type": "string"
-						},
-						"external_urls": {
-							"type": "object",
-							"properties": {
-								"spotify": {
-									"type": "string"
-								}
-							}
-						},
-						"followers": {
-							"type": "object",
-							"properties": {
-								"href": {
-									"type": "null"
-								},
-								"total": {
-									"type": "integer"
-								}
-							}
-						},
-						"href": {
-							"type": "string"
-						},
-						"id": {
-							"type": "string"
-						},
-						"images": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"height": {
-										"type": "null"
-									},
-									"url": {
-										"type": "string"
-									},
-									"width": {
-										"type": "null"
-									}
-								}
-							}
-						},
-						"name": {
-							"type": "string"
-						},
-						"owner": {
-							"type": "object",
-							"properties": {
-								"display_name": {
-									"type": "string"
-								},
-								"external_urls": {
-									"type": "object",
-									"properties": {
-										"spotify": {
-											"type": "string"
-										}
-									}
-								},
-								"href": {
-									"type": "string"
-								},
-								"id": {
-									"type": "string"
-								},
-								"type": {
-									"type": "string"
-								},
-								"uri": {
-									"type": "string"
-								}
-							}
-						},
-						"primary_color": {
-							"type": "null"
-						},
-						"public": {
-							"type": "boolean"
-						},
-						"snapshot_id": {
-							"type": "string"
-						},
-						"tracks": {
-							"type": "object",
-							"properties": {
-								"href": {
-									"type": "string"
-								},
-								"items": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"added_at": {
-												"type": "string"
-											},
-											"added_by": {
-												"type": "object",
-												"properties": {
-													"external_urls": {
-														"type": "object",
-														"properties": {
-															"spotify": {
-																"type": "string"
-															}
-														}
-													},
-													"href": {
-														"type": "string"
-													},
-													"id": {
-														"type": "string"
-													},
-													"type": {
-														"type": "string"
-													},
-													"uri": {
-														"type": "string"
-													}
-												}
-											},
-											"is_local": {
-												"type": "boolean"
-											},
-											"primary_color": {
-												"type": "null"
-											},
-											"track": {
-												"type": "object",
-												"properties": {
-													"preview_url": {
-														"type": "string"
-													},
-													"available_markets": {
-														"type": "array",
-														"items": {
-															"type": "string"
-														}
-													},
-													"explicit": {
-														"type": "boolean"
-													},
-													"type": {
-														"type": "string"
-													},
-													"episode": {
-														"type": "boolean"
-													},
-													"track": {
-														"type": "boolean"
-													},
-													"album": {
-														"type": "object",
-														"properties": {
-															"available_markets": {
-																"type": "array",
-																"items": {
-																	"type": "string"
-																}
-															},
-															"type": {
-																"type": "string"
-															},
-															"album_type": {
-																"type": "string"
-															},
-															"href": {
-																"type": "string"
-															},
-															"id": {
-																"type": "string"
-															},
-															"images": {
-																"type": "array",
-																"items": {
-																	"type": "object",
-																	"properties": {
-																		"url": {
-																			"type": "string"
-																		},
-																		"width": {
-																			"type": "integer"
-																		},
-																		"height": {
-																			"type": "integer"
-																		}
-																	}
-																}
-															},
-															"name": {
-																"type": "string"
-															},
-															"release_date": {
-																"type": "string"
-															},
-															"release_date_precision": {
-																"type": "string"
-															},
-															"uri": {
-																"type": "string"
-															},
-															"artists": {
-																"type": "array",
-																"items": {
-																	"type": "object",
-																	"properties": {
-																		"external_urls": {
-																			"type": "object",
-																			"properties": {
-																				"spotify": {
-																					"type": "string"
-																				}
-																			}
-																		},
-																		"href": {
-																			"type": "string"
-																		},
-																		"id": {
-																			"type": "string"
-																		},
-																		"name": {
-																			"type": "string"
-																		},
-																		"type": {
-																			"type": "string"
-																		},
-																		"uri": {
-																			"type": "string"
-																		}
-																	}
-																}
-															},
-															"external_urls": {
-																"type": "object",
-																"properties": {
-																	"spotify": {
-																		"type": "string"
-																	}
-																}
-															},
-															"total_tracks": {
-																"type": "integer"
-															}
-														}
-													},
-													"artists": {
-														"type": "array",
-														"items": {
-															"type": "object",
-															"properties": {
-																"external_urls": {
-																	"type": "object",
-																	"properties": {
-																		"spotify": {
-																			"type": "string"
-																		}
-																	}
-																},
-																"href": {
-																	"type": "string"
-																},
-																"id": {
-																	"type": "string"
-																},
-																"name": {
-																	"type": "string"
-																},
-																"type": {
-																	"type": "string"
-																},
-																"uri": {
-																	"type": "string"
-																}
-															}
-														}
-													},
-													"disc_number": {
-														"type": "integer"
-													},
-													"track_number": {
-														"type": "integer"
-													},
-													"duration_ms": {
-														"type": "integer"
-													},
-													"external_ids": {
-														"type": "object",
-														"properties": {
-															"isrc": {
-																"type": "string"
-															}
-														}
-													},
-													"external_urls": {
-														"type": "object",
-														"properties": {
-															"spotify": {
-																"type": "string"
-															}
-														}
-													},
-													"href": {
-														"type": "string"
-													},
-													"id": {
-														"type": "string"
-													},
-													"name": {
-														"type": "string"
-													},
-													"popularity": {
-														"type": "integer"
-													},
-													"uri": {
-														"type": "string"
-													},
-													"is_local": {
-														"type": "boolean"
-													}
-												}
-											},
-											"video_thumbnail": {
-												"type": "object",
-												"properties": {
-													"url": {
-														"type": "null"
-													}
-												}
-											}
-										}
-									}
-								},
-								"limit": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "null"
-								},
-								"offset": {
-									"type": "integer"
-								},
-								"previous": {
-									"type": "null"
-								},
-								"total": {
-									"type": "integer"
-								}
-							}
-						},
-						"type": {
-							"type": "string"
-						},
-						"uri": {
-							"type": "string"
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "sample.json",
-						"container": "adfjulytraining"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"id": {
-							"type": "string"
-						},
-						"type": {
-							"type": "string"
-						},
-						"name": {
-							"type": "string"
-						},
-						"ppu": {
-							"type": "number"
-						},
-						"batters": {
-							"type": "object",
-							"properties": {
-								"batter": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "string"
-											},
-											"type": {
-												"type": "string"
-											}
-										}
-									}
-								}
-							}
-						},
-						"topping": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"id": {
-										"type": "string"
-									},
-									"type": {
-										"type": "string"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Products_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Products.csv",
-						"container": "sneha-container"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "String"
-					},
-					{
-						"name": "ProductName",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "RestService1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RestResource_employee_foreach')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -736,6 +225,67 @@
 					},
 					{
 						"name": "ModifiedDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Student_data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Exam",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Student_Data.xlsx",
+						"container": "adfjulytraining"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "StudentId",
+						"type": "String"
+					},
+					{
+						"name": "Student code",
+						"type": "String"
+					},
+					{
+						"name": "Student name",
+						"type": "String"
+					},
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "Language",
+						"type": "String"
+					},
+					{
+						"name": "Maths",
+						"type": "String"
+					},
+					{
+						"name": "Phiysics",
+						"type": "String"
+					},
+					{
+						"name": "Chemistry",
+						"type": "String"
+					},
+					{
+						"name": "Computersicence",
 						"type": "String"
 					}
 				]
@@ -1044,6 +594,449 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServer3_connectionString')]",
+					"userName": "[parameters('SqlServer3_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer3_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer4_AdventureWorksDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]",
+					"userName": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/julyactivity')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('julyactivity_properties_typeProperties_server')]",
+					"database": "[parameters('julyactivity_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "Windows",
+					"userName": "[parameters('julyactivity_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('julyactivity_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_StudentDataLoad')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "truncate table stage.StudentData",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "StudentId",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentID",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Student code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentCode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Student name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentName",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Date",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "Language",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Language",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Maths",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Maths",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Phiysics",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Physics",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Chemistry",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Chemistry",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Computersicence",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ComputerScience",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Student_data",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Azure_DestDb_Stage_StudentData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_dim_StudentData_]"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDB_DestinationDatabase",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sharmila_Activity1"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Student_data')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/exam_3rd_storagezccount_to_azuredb')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "international_sales_csv_metadata",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Script1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "InternationSalesCsvfiles_new",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "AzureSqlTable_table_internationalsales",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDB_DestinationDatabase",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "truncate table table_internationalsales"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "kjc_project"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/international_sales_csv_metadata')]"
+			]
 		}
 	]
 }

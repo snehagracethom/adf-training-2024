@@ -6,483 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-snehagracethomas"
-		},
-		"SqlServer3_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer3'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
-		},
-		"SqlServer3_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer3'"
-		},
-		"SqlServer4_AdventureWorksDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer4_AdventureWorksDB'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
-		},
-		"SqlServer4_AdventureWorksDB_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
-		},
-		"julyactivity_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'julyactivity'"
-		},
-		"SqlServer3_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"julyactivity_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "SNEHA\\SQLEXPRESS"
-		},
-		"julyactivity_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "july_activity"
-		},
-		"julyactivity_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer3')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer3_connectionString')]",
-					"userName": "[parameters('SqlServer3_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer3_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer4_AdventureWorksDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]",
-					"userName": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/julyactivity')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"server": "[parameters('julyactivity_properties_typeProperties_server')]",
-					"database": "[parameters('julyactivity_properties_typeProperties_database')]",
-					"encrypt": "optional",
-					"trustServerCertificate": false,
-					"authenticationType": "Windows",
-					"userName": "[parameters('julyactivity_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('julyactivity_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/exam_3rd_storagezccount_to_azuredb')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "international_sales_csv_metadata",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Script1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "InternationSalesCsvfiles_new",
-											"type": "DatasetReference",
-											"parameters": {
-												"filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "AzureSqlTable_table_internationalsales",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Script1",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDB_DestinationDatabase",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": "truncate table table_internationalsales"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "kjc_project"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/exam_4th_get activity')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "get",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "GET",
-							"headers": {},
-							"url": "https://jsonplaceholder.typicode.com/todos"
-						}
-					},
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "get",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@json(activity('get').output.Response)",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@lessOrEquals(item().id,5)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Filter1').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "RestSource",
-											"httpRequestTimeout": "00:01:40",
-											"requestInterval": "00.00:00:00.010",
-											"requestMethod": "GET",
-											"paginationRules": {
-												"supportRFC5988": "true"
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"mappings": [
-												{
-													"source": {
-														"path": "$['userId']"
-													},
-													"sink": {
-														"name": "userid",
-														"type": "Int32"
-													}
-												},
-												{
-													"source": {
-														"path": "$['id']"
-													},
-													"sink": {
-														"name": "id",
-														"type": "Int32"
-													}
-												},
-												{
-													"source": {
-														"path": "$['title']"
-													},
-													"sink": {
-														"name": "title",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"path": "$['completed']"
-													},
-													"sink": {
-														"name": "completed",
-														"type": "String"
-													}
-												}
-											]
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "RestResource_todo",
-											"type": "DatasetReference",
-											"parameters": {
-												"id": {
-													"value": "@item().id",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "AzureSqlTable2",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_truncate_table]"
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDB_DestinationDatabase",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "kjc_project"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/exam_5th_azuredb_storageacc_json')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -718,194 +247,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_concat_copydata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable_Sales_SalesOrderHeader",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "Id",
-							"value": {
-								"value": "43743",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "q1",
-							"value": {
-								"value": "SELECT o.SalesOrderID, o.OrderDate, c.FirstName, c.LastName, p.Name AS ProductName, s.OrderQty, s.LineTotal\nFROM Sales.SalesOrderHeader o\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable3",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "q2",
-							"value": {
-								"value": "@concat('JOIN Sales.SalesOrderDetail s ON o.SalesOrderID = s.SalesOrderID\nJOIN Person.Person c ON o.CustomerID = c.BusinessEntityID\nJOIN Production.Product p ON s.ProductID = p.ProductID where o.SalesOrderId =', variables('Id'))\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set variable3",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "@concat(variables('q1'),variables('q2'))",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "truncate table SalesDetailsJoin",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "AzureSqlTable_Sales_SalesOrderHeader",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzureSqlTable6",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"Id": {
-						"type": "String"
-					},
-					"q1": {
-						"type": "String"
-					},
-					"q2": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "Sharmila_works"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1005,9 +346,7 @@
 					"table": "tableadf"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer3')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable_Employee')]",
@@ -1040,9 +379,7 @@
 					"table": "Employees"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer4_AdventureWorksDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable_HumanResources_Department')]",
@@ -1081,9 +418,7 @@
 					"table": "Department"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer4_AdventureWorksDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable_Production_product')]",
@@ -1485,8 +820,515 @@
 					"table": "tablecountry"
 				}
 			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Table_HumanResources_Department')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_adventureworks_2022",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "DepartmentID",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GroupName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "HumanResources",
+					"table": "Department"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/julyexcel')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "julyactivity",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "july1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/table_department_destinationdb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_SqlServer_Destinationdb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "DepId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "name",
+						"type": "varchar"
+					},
+					{
+						"name": "Groupname",
+						"type": "varchar"
+					},
+					{
+						"name": "datemodified",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Department"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText_USSalescsv",
+								"type": "DatasetReference"
+							},
+							"name": "USASales"
+						},
+						{
+							"dataset": {
+								"referenceName": "Internationalcsv1",
+								"type": "DatasetReference"
+							},
+							"name": "InternationalSales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Sales_country",
+								"type": "DatasetReference"
+							},
+							"name": "sinkContainer",
+							"description": "Export data to container"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "union1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as string,",
+						"          Date as string,",
+						"          Zip as string,",
+						"          Units as string,",
+						"          Revenue as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> USASales",
+						"source(output(",
+						"          ProductID as string,",
+						"          Date as string,",
+						"          Zip as string,",
+						"          Units as string,",
+						"          Revenue as string,",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     wildcardPaths:['*.csv']) ~> InternationalSales",
+						"USASales derive(Country = 'USA') ~> derivedColumn1",
+						"derivedColumn1, InternationalSales union(byName: true)~> union1",
+						"union1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          DepartmentID as string,",
+						"          Name as string,",
+						"          GroupName as string,",
+						"          ModifiedDate as string",
+						"     ),",
+						"     partitionFileNames:['sales_country.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sinkContainer"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_Sales_Product')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "USASALES_CSV",
+								"type": "DatasetReference"
+							},
+							"name": "USASALES"
+						},
+						{
+							"dataset": {
+								"referenceName": "international_sales_csv_metadata",
+								"type": "DatasetReference"
+							},
+							"name": "InternationalSales"
+						},
+						{
+							"dataset": {
+								"referenceName": "Products_csv",
+								"type": "DatasetReference"
+							},
+							"name": "Products"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable_tablesales1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable_tablesales2",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "cast1"
+						},
+						{
+							"name": "cast2"
+						},
+						{
+							"name": "derivedCountry"
+						},
+						{
+							"name": "union1"
+						},
+						{
+							"name": "totalrevenueaggregate"
+						},
+						{
+							"name": "derivedCountryCode"
+						},
+						{
+							"name": "surrogateKeyID"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "joinSalesProducts"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "split1"
+						},
+						{
+							"name": "rank1"
+						},
+						{
+							"name": "rank2"
+						},
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "sort2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as string,",
+						"          Date as string,",
+						"          Zip as string,",
+						"          Units as string,",
+						"          Revenue as decimal(10,0)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> USASALES",
+						"source(output(",
+						"          ProductID as string,",
+						"          Date as string,",
+						"          Zip as string,",
+						"          Units as string,",
+						"          Revenue as decimal(10,0),",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> InternationalSales",
+						"source(output(",
+						"          ProductID as string,",
+						"          ProductName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Products",
+						"InternationalSales cast(output(",
+						"          Date as date 'yyyy-MM-dd'",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"USASALES cast(output(",
+						"          Date as date 'yyyy-MM-dd'",
+						"     ),",
+						"     errors: true) ~> cast2",
+						"cast2 derive(Country = 'USA') ~> derivedCountry",
+						"derivedCountry, cast1 union(byName: true)~> union1",
+						"union1 aggregate(groupBy(Country,",
+						"          ProductID),",
+						"     TotalRevenue = sum(Revenue)) ~> totalrevenueaggregate",
+						"totalrevenueaggregate derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedCountryCode",
+						"derivedCountryCode keyGenerate(output(SNo as long),",
+						"     startAt: 100L,",
+						"     stepValue: 1L) ~> surrogateKeyID",
+						"surrogateKeyID select(mapColumn(",
+						"          SNo,",
+						"          ProductID,",
+						"          CountryCode,",
+						"          Country,",
+						"          TotalRevenue",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1, Products join(select1@ProductID == Products@ProductID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinSalesProducts",
+						"joinSalesProducts select(mapColumn(",
+						"          SNo,",
+						"          ProductID = select1@ProductID,",
+						"          CountryCode,",
+						"          Country,",
+						"          ProductName,",
+						"          TotalRevenue",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 split(TotalRevenue > 500.000,",
+						"     disjoint: false) ~> split1@(Revenue, Others)",
+						"split1@Revenue rank(desc(TotalRevenue, true),",
+						"     output(rank as long)) ~> rank1",
+						"split1@Others rank(desc(TotalRevenue, true),",
+						"     output(Rank as long)) ~> rank2",
+						"rank1 sort(asc(rank, true)) ~> sort1",
+						"rank2 sort(asc(Rank, true)) ~> sort2",
+						"sort1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+						"sort2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_blob_sql_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table july1",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "blobactivity_excel_1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "julyexcel",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "julyexcel",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Date",
+							"value": {
+								"value": "@activity('Lookup1').output.firstRow.Date",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"Date": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Sharmila_works"
+				},
+				"annotations": []
+			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer3')]"
+				"[concat(variables('factoryId'), '/datasets/julyexcel')]"
 			]
 		}
 	]
