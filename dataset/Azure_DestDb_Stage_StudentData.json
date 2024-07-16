@@ -1,0 +1,64 @@
+{
+	"name": "Azure_DestDb_Stage_StudentData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "StudentID",
+				"type": "varchar"
+			},
+			{
+				"name": "StudentCode",
+				"type": "varchar"
+			},
+			{
+				"name": "StudentName",
+				"type": "varchar"
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			},
+			{
+				"name": "Language",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Maths",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Physics",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Chemistry",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ComputerScience",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "StageCreatedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "StudentData"
+		}
+	}
+}

@@ -1,0 +1,58 @@
+{
+	"name": "Student_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Exam",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Student_Data.xlsx",
+				"container": "adfjulytraining"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "StudentId",
+				"type": "String"
+			},
+			{
+				"name": "Student code",
+				"type": "String"
+			},
+			{
+				"name": "Student name",
+				"type": "String"
+			},
+			{
+				"name": "date",
+				"type": "String"
+			},
+			{
+				"name": "Language",
+				"type": "String"
+			},
+			{
+				"name": "Maths",
+				"type": "String"
+			},
+			{
+				"name": "Phiysics",
+				"type": "String"
+			},
+			{
+				"name": "Chemistry",
+				"type": "String"
+			},
+			{
+				"name": "Computersicence",
+				"type": "String"
+			}
+		]
+	}
+}
