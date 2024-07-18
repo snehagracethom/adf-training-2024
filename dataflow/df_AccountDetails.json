@@ -27,6 +27,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
@@ -43,7 +46,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'arrayOfDocuments') ~> source1",
-				"source1 foldDown(unroll(accounts),",
+				"source1 foldDown(unroll(accounts, accounts),",
 				"     mapColumn(",
 				"          id,",
 				"          fullName,",
@@ -51,13 +54,17 @@
 				"          email,",
 				"          phone,",
 				"          accountCreated,",
-				"          accountID = accounts.accountId,",
+				"          accountId = accounts.accountId,",
 				"          accountBalance = accounts.accountBalance,",
 				"          created_account = accounts.created",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 derive(stage_createddate = currentDate()) ~> derivedColumn1",
+				"cast1 derive(stage_createddate = currentDate()) ~> derivedColumn1",
+				"flatten1 cast(output(",
+				"          id as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
