@@ -1,0 +1,58 @@
+{
+	"name": "accountDetilas_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "accountdetails_json.json",
+				"container": "adfjulytraining"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"fullName": {
+					"type": "string"
+				},
+				"country": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"phone": {
+					"type": "string"
+				},
+				"accountCreated": {
+					"type": "string"
+				},
+				"accounts": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"accountId": {
+								"type": "integer"
+							},
+							"accountBalance": {
+								"type": "integer"
+							},
+							"created": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
