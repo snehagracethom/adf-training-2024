@@ -1,0 +1,16 @@
+{
+	"name": "AzureAccountDetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Stage",
+			"table": "AccountDetails"
+		}
+	}
+}
