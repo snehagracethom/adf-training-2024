@@ -1,0 +1,87 @@
+{
+	"name": "df_accountdetails",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "accountDetilas_json",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureAccountDetails",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          accountCreated as date,",
+				"          accounts as (accountBalance as integer, accountId as long, created as date)[],",
+				"          country as string,",
+				"          email as string,",
+				"          fullName as string,",
+				"          id as short,",
+				"          phone as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1",
+				"source1 foldDown(unroll(accounts, accounts),",
+				"     mapColumn(",
+				"          accountCreated,",
+				"          accountBalance = accounts.accountBalance,",
+				"          accountId = accounts.accountId,",
+				"          created = accounts.created,",
+				"          country,",
+				"          email,",
+				"          fullName,",
+				"          id,",
+				"          phone",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 derive(stage_createdDate = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          accountCreated,",
+				"          accounts = accountBalance,",
+				"          accountId,",
+				"          created,",
+				"          country,",
+				"          email,",
+				"          fullName,",
+				"          id,",
+				"          phone,",
+				"          stage_createdDate",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
