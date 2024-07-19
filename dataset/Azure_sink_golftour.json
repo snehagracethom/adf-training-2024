@@ -2,7 +2,7 @@
 	"name": "Azure_sink_golftour",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+			"referenceName": "AzureSqlDB_DestinationDatabase",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
