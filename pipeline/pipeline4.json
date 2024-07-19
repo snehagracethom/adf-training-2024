@@ -1,0 +1,189 @@
+{
+	"name": "pipeline4",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"x-rapidapi-host": {
+							"value": "golf-leaderboard-data.p.rapidapi.com",
+							"type": "Expression"
+						},
+						"x-rapidapi-key": {
+							"value": "06bc8ae7b3msh3ea053ac93927f9p150719jsn3e3eeb93ed11",
+							"type": "Expression"
+						}
+					},
+					"url": "https://golf-leaderboard-data.p.rapidapi.com/tours"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"additionalHeaders": {
+							"x-rapidapi-host": {
+								"value": "golf-leaderboard-data.p.rapidapi.com",
+								"type": "Expression"
+							},
+							"x-rapidapi-key": {
+								"value": "06bc8ae7b3msh3ea053ac93927f9p150719jsn3e3eeb93ed11",
+								"type": "Expression"
+							}
+						},
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table stage.first_stage_golftour",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['tour_id']"
+								},
+								"sink": {
+									"name": "tour_id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['tour_name']"
+								},
+								"sink": {
+									"name": "tour_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['season_id']"
+								},
+								"sink": {
+									"name": "season_id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['active']"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Int32"
+								}
+							}
+						],
+						"collectionReference": "$['results']",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Rest_golf_tour",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Azure_golf_tour",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Data flow1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "sharmila_Activity1"
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Rest_golf_tour",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_REST_golf",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
