@@ -1,0 +1,40 @@
+{
+	"name": "Azure_golf_tour",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "tour_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tour_name",
+				"type": "varchar"
+			},
+			{
+				"name": "season_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "active",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "stage_createdDate",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "first_stage_golftour"
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "Azure_sink_golftour",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_AdventureWorks2022",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "golf_tour"
+		}
+	}
+}
