@@ -1,0 +1,14 @@
+{
+	"name": "string_library",
+	"properties": {
+		"type": "UDFLibrary",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"DefaultUpper(string) as string = coalesce(upper(i1),'DEFAULT')"
+			]
+		}
+	}
+}
