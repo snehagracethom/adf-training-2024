@@ -59,6 +59,9 @@
 		"julyactivity_password": {
 			"value": ""
 		},
+		"LS_REST_golf_properties_typeProperties_url": {
+			"value": "https://golf-leaderboard-data.p.rapidapi.com/tours"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employee"
 		},

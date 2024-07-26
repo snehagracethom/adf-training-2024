@@ -34,46 +34,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_adventureworks_2022'"
 		},
-		"SqlServer1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer1'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
-		},
-		"SqlServer1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer1'"
-		},
-		"SqlServer2_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer2'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=destinationdb"
-		},
-		"SqlServer2_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer2'"
-		},
-		"SqlServer3_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer3'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=assessment"
-		},
-		"SqlServer3_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer3'"
-		},
-		"SqlServer4_AdventureWorksDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SqlServer4_AdventureWorksDB'",
-			"defaultValue": "Integrated Security=True;Data Source=SNEHA\\SQLEXPRESS;Initial Catalog=AdventureWorks2008R2"
-		},
-		"SqlServer4_AdventureWorksDB_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer4_AdventureWorksDB'"
-		},
-		"julyactivity_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'julyactivity'"
-		},
 		"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
@@ -85,40 +45,527 @@
 		"LS_adventureworks_2022_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sneha"
-		},
-		"SqlServer1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"SqlServer2_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"SqlServer3_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"SqlServer4_AdventureWorksDB_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
-		},
-		"julyactivity_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "SNEHA\\SQLEXPRESS"
-		},
-		"julyactivity_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "july_activity"
-		},
-		"julyactivity_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sneha"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_salesorderdetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "salesorderdetails.json",
+						"container": "snehagracethomas-container"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ply.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"collaborative": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"external_urls": {
+							"type": "object",
+							"properties": {
+								"spotify": {
+									"type": "string"
+								}
+							}
+						},
+						"followers": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"href": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"images": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"height": {
+										"type": "null"
+									},
+									"url": {
+										"type": "string"
+									},
+									"width": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"name": {
+							"type": "string"
+						},
+						"owner": {
+							"type": "object",
+							"properties": {
+								"display_name": {
+									"type": "string"
+								},
+								"external_urls": {
+									"type": "object",
+									"properties": {
+										"spotify": {
+											"type": "string"
+										}
+									}
+								},
+								"href": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								},
+								"type": {
+									"type": "string"
+								},
+								"uri": {
+									"type": "string"
+								}
+							}
+						},
+						"primary_color": {
+							"type": "null"
+						},
+						"public": {
+							"type": "boolean"
+						},
+						"snapshot_id": {
+							"type": "string"
+						},
+						"tracks": {
+							"type": "object",
+							"properties": {
+								"href": {
+									"type": "string"
+								},
+								"items": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"added_at": {
+												"type": "string"
+											},
+											"added_by": {
+												"type": "object",
+												"properties": {
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"type": {
+														"type": "string"
+													},
+													"uri": {
+														"type": "string"
+													}
+												}
+											},
+											"is_local": {
+												"type": "boolean"
+											},
+											"primary_color": {
+												"type": "null"
+											},
+											"track": {
+												"type": "object",
+												"properties": {
+													"preview_url": {
+														"type": "string"
+													},
+													"available_markets": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													},
+													"explicit": {
+														"type": "boolean"
+													},
+													"type": {
+														"type": "string"
+													},
+													"episode": {
+														"type": "boolean"
+													},
+													"track": {
+														"type": "boolean"
+													},
+													"album": {
+														"type": "object",
+														"properties": {
+															"available_markets": {
+																"type": "array",
+																"items": {
+																	"type": "string"
+																}
+															},
+															"type": {
+																"type": "string"
+															},
+															"album_type": {
+																"type": "string"
+															},
+															"href": {
+																"type": "string"
+															},
+															"id": {
+																"type": "string"
+															},
+															"images": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"url": {
+																			"type": "string"
+																		},
+																		"width": {
+																			"type": "integer"
+																		},
+																		"height": {
+																			"type": "integer"
+																		}
+																	}
+																}
+															},
+															"name": {
+																"type": "string"
+															},
+															"release_date": {
+																"type": "string"
+															},
+															"release_date_precision": {
+																"type": "string"
+															},
+															"uri": {
+																"type": "string"
+															},
+															"artists": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"external_urls": {
+																			"type": "object",
+																			"properties": {
+																				"spotify": {
+																					"type": "string"
+																				}
+																			}
+																		},
+																		"href": {
+																			"type": "string"
+																		},
+																		"id": {
+																			"type": "string"
+																		},
+																		"name": {
+																			"type": "string"
+																		},
+																		"type": {
+																			"type": "string"
+																		},
+																		"uri": {
+																			"type": "string"
+																		}
+																	}
+																}
+															},
+															"external_urls": {
+																"type": "object",
+																"properties": {
+																	"spotify": {
+																		"type": "string"
+																	}
+																}
+															},
+															"total_tracks": {
+																"type": "integer"
+															}
+														}
+													},
+													"artists": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"external_urls": {
+																	"type": "object",
+																	"properties": {
+																		"spotify": {
+																			"type": "string"
+																		}
+																	}
+																},
+																"href": {
+																	"type": "string"
+																},
+																"id": {
+																	"type": "string"
+																},
+																"name": {
+																	"type": "string"
+																},
+																"type": {
+																	"type": "string"
+																},
+																"uri": {
+																	"type": "string"
+																}
+															}
+														}
+													},
+													"disc_number": {
+														"type": "integer"
+													},
+													"track_number": {
+														"type": "integer"
+													},
+													"duration_ms": {
+														"type": "integer"
+													},
+													"external_ids": {
+														"type": "object",
+														"properties": {
+															"isrc": {
+																"type": "string"
+															}
+														}
+													},
+													"external_urls": {
+														"type": "object",
+														"properties": {
+															"spotify": {
+																"type": "string"
+															}
+														}
+													},
+													"href": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"name": {
+														"type": "string"
+													},
+													"popularity": {
+														"type": "integer"
+													},
+													"uri": {
+														"type": "string"
+													},
+													"is_local": {
+														"type": "boolean"
+													}
+												}
+											},
+											"video_thumbnail": {
+												"type": "object",
+												"properties": {
+													"url": {
+														"type": "null"
+													}
+												}
+											}
+										}
+									}
+								},
+								"limit": {
+									"type": "integer"
+								},
+								"next": {
+									"type": "null"
+								},
+								"offset": {
+									"type": "integer"
+								},
+								"previous": {
+									"type": "null"
+								},
+								"total": {
+									"type": "integer"
+								}
+							}
+						},
+						"type": {
+							"type": "string"
+						},
+						"uri": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sample.json",
+						"container": "adfjulytraining"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"ppu": {
+							"type": "number"
+						},
+						"batters": {
+							"type": "object",
+							"properties": {
+								"batter": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"type": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"topping": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Products_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Products.csv",
+						"container": "sneha-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "ProductName",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -201,6 +648,22 @@
 						"type": "Expression"
 					}
 				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Rest_golf_tour')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_REST_golf",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
 				"schema": []
 			},
 			"dependsOn": []
@@ -619,120 +1082,6 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('LS_adventureworks_2022_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer1_connectionString')]",
-					"userName": "[parameters('SqlServer1_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer1_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer2_connectionString')]",
-					"userName": "[parameters('SqlServer2_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer2_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer3')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer3_connectionString')]",
-					"userName": "[parameters('SqlServer3_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer3_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer4_AdventureWorksDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer4_AdventureWorksDB_connectionString')]",
-					"userName": "[parameters('SqlServer4_AdventureWorksDB_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer4_AdventureWorksDB_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime2",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/julyactivity')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"server": "[parameters('julyactivity_properties_typeProperties_server')]",
-					"database": "[parameters('julyactivity_properties_typeProperties_database')]",
-					"encrypt": "optional",
-					"trustServerCertificate": false,
-					"authenticationType": "Windows",
-					"userName": "[parameters('julyactivity_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('julyactivity_password')]"
 					}
 				},
 				"connectVia": {

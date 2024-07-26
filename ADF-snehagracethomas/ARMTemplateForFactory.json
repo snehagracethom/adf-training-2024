@@ -86,6 +86,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'julyactivity'"
 		},
+		"LS_REST_golf_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://golf-leaderboard-data.p.rapidapi.com/tours"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -226,6 +230,197 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_accountdetails')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_GOLF_TOUR_API')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {
+								"x-rapidapi-host": {
+									"value": "golf-leaderboard-data.p.rapidapi.com",
+									"type": "Expression"
+								},
+								"x-rapidapi-key": {
+									"value": "06bc8ae7b3msh3ea053ac93927f9p150719jsn3e3eeb93ed11",
+									"type": "Expression"
+								}
+							},
+							"url": "https://golf-leaderboard-data.p.rapidapi.com/tours"
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Web1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"x-rapidapi-host": {
+										"value": "golf-leaderboard-data.p.rapidapi.com",
+										"type": "Expression"
+									},
+									"x-rapidapi-key": {
+										"value": "06bc8ae7b3msh3ea053ac93927f9p150719jsn3e3eeb93ed11",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "truncate table stage.first_stage_golftour",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['tour_id']"
+										},
+										"sink": {
+											"name": "tour_id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['tour_name']"
+										},
+										"sink": {
+											"name": "tour_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['season_id']"
+										},
+										"sink": {
+											"name": "season_id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['active']"
+										},
+										"sink": {
+											"name": "active",
+											"type": "Int32"
+										}
+									}
+								],
+								"collectionReference": "$['results']",
+								"mapComplexValuesToString": true
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Rest_golf_tour",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Azure_golf_tour",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_golf_tour",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sharmila_Activity1"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Rest_golf_tour')]",
+				"[concat(variables('factoryId'), '/datasets/Azure_golf_tour')]",
+				"[concat(variables('factoryId'), '/dataflows/df_golf_tour')]"
 			]
 		},
 		{
@@ -2296,6 +2491,72 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Azure_golf_tour')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "tour_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tour_name",
+						"type": "varchar"
+					},
+					{
+						"name": "season_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "active",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "first_stage_golftour"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_sink_golftour')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "golf_tour"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3428,6 +3689,24 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Rest_golf_tour')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_REST_golf",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_REST_golf')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Sales_country')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4543,6 +4822,21 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS_REST_golf')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('LS_REST_golf_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_RestService1_employees')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -5215,6 +5509,95 @@
 				"[concat(variables('factoryId'), '/datasets/accountDetilas_json')]",
 				"[concat(variables('factoryId'), '/datasets/AzureAccountDetails')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_golf_tour')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Azure_golf_tour",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Azure_sink_golftour",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          tour_id as integer,",
+						"          tour_name as string,",
+						"          season_id as integer,",
+						"          active as integer,",
+						"          stage_createdDate as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source1 keyGenerate(output(ID as long),",
+						"     startAt: 100L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          tour_id,",
+						"          tour_name,",
+						"          season_id,",
+						"          active,",
+						"          stage_createdDate",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Azure_golf_tour')]",
+				"[concat(variables('factoryId'), '/datasets/Azure_sink_golftour')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/string_library')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "UDFLibrary",
+				"typeProperties": {
+					"sources": [],
+					"sinks": [],
+					"transformations": [],
+					"scriptLines": [
+						"DefaultUpper(string) as string = coalesce(upper(i1),'DEFAULT')"
+					]
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

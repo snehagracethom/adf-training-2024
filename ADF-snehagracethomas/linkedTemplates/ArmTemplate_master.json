@@ -86,6 +86,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'julyactivity'"
 		},
+		"LS_REST_golf_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://golf-leaderboard-data.p.rapidapi.com/tours"
+		},
 		"LS_RestService1_employees_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -182,6 +186,9 @@
 					"AzureSqlDatabase_AdventureWorks2022_connectionString": {
 						"value": "[parameters('AzureSqlDatabase_AdventureWorks2022_connectionString')]"
 					},
+					"LS_REST_golf_properties_typeProperties_url": {
+						"value": "[parameters('LS_REST_golf_properties_typeProperties_url')]"
+					},
 					"LS_RestService1_employees_properties_typeProperties_url": {
 						"value": "[parameters('LS_RestService1_employees_properties_typeProperties_url')]"
 					},
@@ -253,6 +260,35 @@
 					"LS_adventureworks_2022_password": {
 						"value": "[parameters('LS_adventureworks_2022_password')]"
 					},
+					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
+					},
+					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
+					},
+					"LS_adventureworks_2022_properties_typeProperties_userName": {
+						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "ADF-snehagracethomas_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
 					},
@@ -280,15 +316,6 @@
 					"julyactivity_password": {
 						"value": "[parameters('julyactivity_password')]"
 					},
-					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
-					},
-					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
-					},
-					"LS_adventureworks_2022_properties_typeProperties_userName": {
-						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
-					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
@@ -309,26 +336,6 @@
 					},
 					"julyactivity_properties_typeProperties_userName": {
 						"value": "[parameters('julyactivity_properties_typeProperties_userName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_1')]"
-			]
-		},
-		{
-			"name": "ADF-snehagracethomas_ArmTemplate_3",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
 					}
 				}
 			},
