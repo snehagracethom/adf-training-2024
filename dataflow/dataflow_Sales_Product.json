@@ -89,6 +89,12 @@
 					"name": "sort2"
 				}
 			],
+			"udfLibraries": [
+				{
+					"referenceName": "string_library",
+					"type": "DataFlowReference"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          ProductID as string,",
@@ -131,7 +137,7 @@
 				"union1 aggregate(groupBy(Country,",
 				"          ProductID),",
 				"     TotalRevenue = sum(Revenue)) ~> totalrevenueaggregate",
-				"totalrevenueaggregate derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedCountryCode",
+				"totalrevenueaggregate derive(CountryCode = DefaultCountryCode(Country)) ~> derivedCountryCode",
 				"derivedCountryCode keyGenerate(output(SNo as long),",
 				"     startAt: 100L,",
 				"     stepValue: 1L) ~> surrogateKeyID",
@@ -174,6 +180,7 @@
 				"     updateable:false,",
 				"     upsertable:false,",
 				"     format: 'table',",
+				"     preSQLs:['truncate table tablesales1'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
@@ -184,6 +191,7 @@
 				"     updateable:false,",
 				"     upsertable:false,",
 				"     format: 'table',",
+				"     preSQLs:['truncate table tablesales2'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
