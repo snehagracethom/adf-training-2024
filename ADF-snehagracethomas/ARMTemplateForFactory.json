@@ -802,6 +802,58 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_sales')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_Sales_Product",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"USASALES": {},
+									"InternationalSales": {},
+									"Products": {},
+									"sink1": {},
+									"sink2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sharmila_Activity1"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_Sales_Product')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_sendmail_logicapp')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5307,6 +5359,12 @@
 							"name": "sort2"
 						}
 					],
+					"udfLibraries": [
+						{
+							"referenceName": "string_library",
+							"type": "DataFlowReference"
+						}
+					],
 					"scriptLines": [
 						"source(output(",
 						"          ProductID as string,",
@@ -5349,7 +5407,7 @@
 						"union1 aggregate(groupBy(Country,",
 						"          ProductID),",
 						"     TotalRevenue = sum(Revenue)) ~> totalrevenueaggregate",
-						"totalrevenueaggregate derive(CountryCode = concat(upper(left(Country,3)),'12' ,upper(right(Country,2)))) ~> derivedCountryCode",
+						"totalrevenueaggregate derive(CountryCode = DefaultCountryCode(Country)) ~> derivedCountryCode",
 						"derivedCountryCode keyGenerate(output(SNo as long),",
 						"     startAt: 100L,",
 						"     stepValue: 1L) ~> surrogateKeyID",
@@ -5392,6 +5450,7 @@
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
+						"     preSQLs:['truncate table tablesales1'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
@@ -5402,6 +5461,7 @@
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
+						"     preSQLs:['truncate table tablesales2'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
@@ -5409,6 +5469,7 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/string_library')]",
 				"[concat(variables('factoryId'), '/datasets/USASALES_CSV')]",
 				"[concat(variables('factoryId'), '/datasets/international_sales_csv_metadata')]",
 				"[concat(variables('factoryId'), '/datasets/Products_csv')]",
@@ -5593,7 +5654,7 @@
 					"sinks": [],
 					"transformations": [],
 					"scriptLines": [
-						"DefaultUpper(string) as string = coalesce(upper(i1),'DEFAULT')"
+						"DefaultCountryCode(string) as string = concat(upper(left(i1,3)),'12' ,upper(right(i1,2)))"
 					]
 				}
 			},
