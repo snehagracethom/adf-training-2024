@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlTable_Stage_Sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "Sales"
+		}
+	}
+}
