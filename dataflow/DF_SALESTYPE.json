@@ -225,12 +225,14 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
+				"     recreate:true,",
 				"     format: 'table',",
 				"     preSQLs:['truncate table stage.salestype'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          InvoiceId,",
 				"          InvoiceNumber,",
 				"          Date,",
 				"          Type,",
@@ -250,8 +252,7 @@
 				"          {Amount _Paid/Received},",
 				"          {Amount _Paid/ReceivedDesc},",
 				"          FileName,",
-				"          CreatedDate,",
-				"          InvoiceId",
+				"          CreatedDate",
 				"     )) ~> sink1"
 			]
 		}
