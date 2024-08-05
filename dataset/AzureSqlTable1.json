@@ -1,0 +1,110 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "InvoiceId",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "InvoiceNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Period",
+				"type": "date"
+			},
+			{
+				"name": "DueDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InvoiceDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FromDate",
+				"type": "date"
+			},
+			{
+				"name": "ToDate",
+				"type": "date"
+			},
+			{
+				"name": "NetAmount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "VatAmount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "grossValue",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SKDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AsOfDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CharecontrolNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SKTransType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TransDesc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Amount _Paid_Received",
+				"type": "decimal",
+				"precision": 30,
+				"scale": 2
+			},
+			{
+				"name": "Amount _Paid_ReceivedDesc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FileName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "SALESTYPE"
+		}
+	}
+}
