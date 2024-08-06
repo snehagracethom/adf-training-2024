@@ -114,8 +114,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE STAGE.TYPE",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -158,7 +160,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_dim_SalesType]"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"folder": {
