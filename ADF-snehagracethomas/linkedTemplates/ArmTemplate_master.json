@@ -241,33 +241,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"LS_SQLServer_assessmentdb_connectionString": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
-					},
-					"LS_SQLServer_assessmentdb_password": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
-					},
-					"LS_SqlServer_Destinationdb_connectionString": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_connectionString')]"
-					},
-					"LS_SqlServer_Destinationdb_password": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_password')]"
-					},
-					"LS_adventureworks_2022_connectionString": {
-						"value": "[parameters('LS_adventureworks_2022_connectionString')]"
-					},
-					"LS_adventureworks_2022_password": {
-						"value": "[parameters('LS_adventureworks_2022_password')]"
-					},
-					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
-					},
-					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
-						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
-					},
-					"LS_adventureworks_2022_properties_typeProperties_userName": {
-						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -288,6 +261,24 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQLServer_assessmentdb_connectionString": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_connectionString')]"
+					},
+					"LS_SQLServer_assessmentdb_password": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_password')]"
+					},
+					"LS_SqlServer_Destinationdb_connectionString": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_connectionString')]"
+					},
+					"LS_SqlServer_Destinationdb_password": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_password')]"
+					},
+					"LS_adventureworks_2022_connectionString": {
+						"value": "[parameters('LS_adventureworks_2022_connectionString')]"
+					},
+					"LS_adventureworks_2022_password": {
+						"value": "[parameters('LS_adventureworks_2022_password')]"
 					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
@@ -315,6 +306,15 @@
 					},
 					"julyactivity_password": {
 						"value": "[parameters('julyactivity_password')]"
+					},
+					"LS_SQLServer_assessmentdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQLServer_assessmentdb_properties_typeProperties_userName')]"
+					},
+					"LS_SqlServer_Destinationdb_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SqlServer_Destinationdb_properties_typeProperties_userName')]"
+					},
+					"LS_adventureworks_2022_properties_typeProperties_userName": {
+						"value": "[parameters('LS_adventureworks_2022_properties_typeProperties_userName')]"
 					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
@@ -361,6 +361,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "ADF-snehagracethomas_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-snehagracethomas_ArmTemplate_4')]"
 			]
 		}
 	]

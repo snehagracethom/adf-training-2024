@@ -424,6 +424,169 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_SALESTYPE')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE STAGE.SALES",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Excel2_SALES",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable2_sALES_Cd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE STAGE.TYPE",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Excel2_type",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable2_tyPE_CD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_dim_salestype1]"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDB_DestinationDatabase",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sharmila_Activity1"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Excel2_SALES')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable2_sALES_Cd')]",
+				"[concat(variables('factoryId'), '/datasets/Excel2_type')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable2_tyPE_CD')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_StudentDataLoad')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1694,6 +1857,260 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "InvoiceId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "InvoiceNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Period",
+						"type": "date"
+					},
+					{
+						"name": "DueDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FromDate",
+						"type": "date"
+					},
+					{
+						"name": "ToDate",
+						"type": "date"
+					},
+					{
+						"name": "NetAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "VatAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "grossValue",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SKDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AsOfDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CharecontrolNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SKTransType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TransDesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Amount _Paid_Received",
+						"type": "decimal",
+						"precision": 30,
+						"scale": 2
+					},
+					{
+						"name": "Amount _Paid_ReceivedDesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FileName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "SALESTYPE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1_DIM_SALESTYPE2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "InvoiceId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "InvoiceNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Period",
+						"type": "date"
+					},
+					{
+						"name": "DueDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FromDate",
+						"type": "date"
+					},
+					{
+						"name": "ToDate",
+						"type": "date"
+					},
+					{
+						"name": "NetAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "VatAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "grossValue",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SKDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AsOfDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CharecontrolNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SKTransType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TransDesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Amount_Paid_Received",
+						"type": "decimal",
+						"precision": 30,
+						"scale": 2
+					},
+					{
+						"name": "Amount_Paid_ReceivedDesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FileName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "date"
+					},
+					{
+						"name": "CreatedDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "CreatedBy",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UpdatedDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "IsDeleted",
+						"type": "bit"
+					},
+					{
+						"name": "IsActive",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "SALESTYPE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTableSalesCustomer')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2242,6 +2659,66 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_Stage_Sales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "Sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_Stage_type')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SKTransType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "BKTransType",
+						"type": "varchar"
+					},
+					{
+						"name": "TransDesc",
+						"type": "varchar"
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "type"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTable_adventureworks_production_product')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2474,6 +2951,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSql_STAGE_SALESTYPE')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "STAGE",
+					"table": "SALESTYPE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Azure_DestDb_Stage_StudentData')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2536,6 +3034,120 @@
 				"typeProperties": {
 					"schema": "stage",
 					"table": "StudentData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_STAGE_SALES_DF')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "InvoiceNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Period",
+						"type": "date"
+					},
+					{
+						"name": "DueDate",
+						"type": "varchar"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "varchar"
+					},
+					{
+						"name": "FromDate",
+						"type": "date"
+					},
+					{
+						"name": "ToDate",
+						"type": "date"
+					},
+					{
+						"name": "NetAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "VatAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "grossValue",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "Sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_STAGE_TYPE_DF')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SKTransType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "BKTransType",
+						"type": "varchar"
+					},
+					{
+						"name": "TransDesc",
+						"type": "varchar"
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "type"
 				}
 			},
 			"dependsOn": [
@@ -4619,6 +5231,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/azure_stage_SalesType')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "SalesType"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/blobactivity_excel_1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -5180,6 +5813,269 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_SALESTYPE')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Azure_STAGE_SALES_DF",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Azure_STAGE_TYPE_DF",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "azure_stage_SalesType",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DCSKDateASOfDate"
+						},
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "derivedColumn2"
+						},
+						{
+							"name": "derivedColumn3"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "surrogateKey1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          InvoiceNumber as string,",
+						"          Date as date,",
+						"          Type as string,",
+						"          Period as date,",
+						"          DueDate as string,",
+						"          InvoiceDate as string,",
+						"          FromDate as date,",
+						"          ToDate as date,",
+						"          NetAmount as decimal(18,2),",
+						"          VatAmount as decimal(18,2),",
+						"          grossValue as integer,",
+						"          stage_createdDate as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          SKTransType as integer,",
+						"          BKTransType as string,",
+						"          TransDesc as string,",
+						"          stage_createdDate as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source1 derive(SKDate = concat(\r",
+						"    substring(toString(Date, 'dd-MM-yyyy'), 0, 2),\r",
+						"    substring(toString(Date, 'dd-MM-yyyy'), 4, 2),\r",
+						"    substring(toString(Date, 'dd-MM-yyyy'), 7, 4)\r",
+						"   \r",
+						"),",
+						"          AsOfDate = toString(\r",
+						"    toDate(\r",
+						"        concat(\r",
+						"            substring(\r",
+						"                toString(\r",
+						"                    addMonths(Date, 1)\r",
+						"                ), 0, 7\r",
+						"            ), '-01'\r",
+						"        ), 'yyyy-MM-dd'\r",
+						"    ) - 1, 'dd-MM-yyyy'\r",
+						"),",
+						"          CharecontrolNumber = concat(Type, '-', InvoiceNumber)) ~> DCSKDateASOfDate",
+						"DCSKDateASOfDate, source2 join(Type == BKTransType,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(Amount_Paid_Received = (NetAmount+VatAmount)*grossValue) ~> derivedColumn1",
+						"derivedColumn1 derive(Amount_Paid_ReceivedDesc = iif(\r",
+						"    Amount_Paid_Received >= 800000.00,\r",
+						"    iif(\r",
+						"       Type == 'C', 'charge is high',\r",
+						"       iif(\r",
+						"          Type == 'P', 'Payable is high',\r",
+						"          iif(\r",
+						"             Type == 'K', 'Cheque is high',\r",
+						"             iif(\r",
+						"                Type == 'J', 'Journal entry is high',\r",
+						"                iif(\r",
+						"                    Type == 'R', 'Receipt is high',\r",
+						"                    'Unknown Type'\r",
+						"                )\r",
+						"             )\r",
+						"          )\r",
+						"       )\r",
+						"    ),\r",
+						"    iif(\r",
+						"       Amount_Paid_Received >= 400000.00,\r",
+						"       iif(\r",
+						"          Type == 'C', 'charge is medium',\r",
+						"          iif(\r",
+						"             Type == 'P', 'Payable is medium',\r",
+						"             iif(\r",
+						"                Type == 'K', 'Cheque is medium',\r",
+						"                iif(\r",
+						"                    Type == 'J', 'Journal entry is medium',\r",
+						"                    iif(\r",
+						"                       Type == 'R', 'Receipt is medium',\r",
+						"                       'Unknown Type'\r",
+						"                    )\r",
+						"                )\r",
+						"             )\r",
+						"          )\r",
+						"       ),\r",
+						"       iif(\r",
+						"          Amount_Paid_Received >= 100000.00,\r",
+						"          iif(\r",
+						"             Type == 'C', 'charge is Low',\r",
+						"             iif(\r",
+						"                Type == 'P', 'Payable is Low',\r",
+						"                iif(\r",
+						"                    Type == 'K', 'Cheque is Low',\r",
+						"                    iif(\r",
+						"                       Type == 'J', 'Journal entry is Low',\r",
+						"                       iif(\r",
+						"                          Type == 'R', 'Receipt is Low',\r",
+						"                          'Unknown Type'\r",
+						"                       )\r",
+						"                    )\r",
+						"                )\r",
+						"             )\r",
+						"          ),\r",
+						"          iif(\r",
+						"             Amount_Paid_Received < 100000.00,\r",
+						"             iif(\r",
+						"                Type == 'C', 'charge is very Low',\r",
+						"                iif(\r",
+						"                    Type == 'P', 'Payable is very Low',\r",
+						"                    iif(\r",
+						"                       Type == 'K', 'Cheque is very Low',\r",
+						"                       iif(\r",
+						"                          Type == 'J', 'Journal entry is very Low',\r",
+						"                          iif(\r",
+						"                             Type == 'R', 'Receipt is very Low',\r",
+						"                             'Unknown Type'\r",
+						"                          )\r",
+						"                       )\r",
+						"                    )\r",
+						"                )\r",
+						"             ),\r",
+						"             'unknown'\r",
+						"          )\r",
+						"       )\r",
+						"    )\r",
+						")) ~> derivedColumn2",
+						"derivedColumn2 derive(FileName = concat(\r",
+						"  'sales_', \r",
+						"  substring(toString(currentDate(),'dd-MM-yyyy'), 0, 2) ,\r",
+						"  substring(toString(currentDate(),'dd-MM-yyyy'), 4, 2) , \r",
+						"  substring(toString(currentDate(),'dd-MM-yyyy'), 7, 4), \r",
+						"  '.xlsx'\r",
+						"),",
+						"          CreatedDate = currentDate()) ~> derivedColumn3",
+						"derivedColumn3 select(mapColumn(",
+						"          InvoiceNumber,",
+						"          Date,",
+						"          Type,",
+						"          Period,",
+						"          DueDate,",
+						"          InvoiceDate,",
+						"          FromDate,",
+						"          ToDate,",
+						"          NetAmount,",
+						"          VatAmount,",
+						"          grossValue,",
+						"          SKDate,",
+						"          AsOfDate,",
+						"          CharecontrolNumber,",
+						"          SKTransType,",
+						"          TransDesc,",
+						"          Amount_Paid_Received,",
+						"          Amount_Paid_ReceivedDesc,",
+						"          FileName,",
+						"          CreatedDate",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> select1",
+						"select1 keyGenerate(output(InvoiceId as long),",
+						"     startAt: 100L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     preSQLs:['truncate table stage.salestype'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          InvoiceId,",
+						"          InvoiceNumber,",
+						"          Date,",
+						"          Type,",
+						"          Period,",
+						"          DueDate,",
+						"          InvoiceDate,",
+						"          FromDate,",
+						"          ToDate,",
+						"          NetAmount,",
+						"          VatAmount,",
+						"          grossValue,",
+						"          SKDate,",
+						"          AsOfDate,",
+						"          CharecontrolNumber,",
+						"          SKTransType,",
+						"          TransDesc,",
+						"          Amount_Paid_Received,",
+						"          Amount_Paid_ReceivedDesc,",
+						"          FileName,",
+						"          CreatedDate",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Azure_STAGE_SALES_DF')]",
+				"[concat(variables('factoryId'), '/datasets/Azure_STAGE_TYPE_DF')]",
+				"[concat(variables('factoryId'), '/datasets/azure_stage_SalesType')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -5659,6 +6555,230 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Excel2_SALES')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sales",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DataSample.xlsx",
+						"container": "adfjulytraining"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "InvoiceNumber",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Period",
+						"type": "String"
+					},
+					{
+						"name": "DueDate",
+						"type": "String"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "String"
+					},
+					{
+						"name": "FromDate",
+						"type": "String"
+					},
+					{
+						"name": "ToDate",
+						"type": "String"
+					},
+					{
+						"name": "NetAmount",
+						"type": "String"
+					},
+					{
+						"name": "VatAmount",
+						"type": "String"
+					},
+					{
+						"name": "grossValue",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2_sALES_Cd')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "InvoiceNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Period",
+						"type": "date"
+					},
+					{
+						"name": "DueDate",
+						"type": "varchar"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "varchar"
+					},
+					{
+						"name": "FromDate",
+						"type": "date"
+					},
+					{
+						"name": "ToDate",
+						"type": "date"
+					},
+					{
+						"name": "NetAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "VatAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "grossValue",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "Sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Excel2_type')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Type",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DataSample.xlsx",
+						"container": "adfjulytraining"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "SKTransType",
+						"type": "String"
+					},
+					{
+						"name": "BKTransType",
+						"type": "String"
+					},
+					{
+						"name": "TransDesc",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2_tyPE_CD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDB_DestinationDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SKTransType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "BKTransType",
+						"type": "varchar"
+					},
+					{
+						"name": "TransDesc",
+						"type": "varchar"
+					},
+					{
+						"name": "stage_createdDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "type"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDB_DestinationDatabase')]"
+			]
 		}
 	]
 }
