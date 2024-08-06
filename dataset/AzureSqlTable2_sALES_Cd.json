@@ -1,0 +1,70 @@
+{
+	"name": "AzureSqlTable2_sALES_Cd",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "InvoiceNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			},
+			{
+				"name": "Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Period",
+				"type": "date"
+			},
+			{
+				"name": "DueDate",
+				"type": "varchar"
+			},
+			{
+				"name": "InvoiceDate",
+				"type": "varchar"
+			},
+			{
+				"name": "FromDate",
+				"type": "date"
+			},
+			{
+				"name": "ToDate",
+				"type": "date"
+			},
+			{
+				"name": "NetAmount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "VatAmount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "grossValue",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "stage_createdDate",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "Sales"
+		}
+	}
+}

@@ -1,0 +1,66 @@
+{
+	"name": "Excel2_SALES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sales",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DataSample.xlsx",
+				"container": "adfjulytraining"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "InvoiceNumber",
+				"type": "String"
+			},
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "Type",
+				"type": "String"
+			},
+			{
+				"name": "Period",
+				"type": "String"
+			},
+			{
+				"name": "DueDate",
+				"type": "String"
+			},
+			{
+				"name": "InvoiceDate",
+				"type": "String"
+			},
+			{
+				"name": "FromDate",
+				"type": "String"
+			},
+			{
+				"name": "ToDate",
+				"type": "String"
+			},
+			{
+				"name": "NetAmount",
+				"type": "String"
+			},
+			{
+				"name": "VatAmount",
+				"type": "String"
+			},
+			{
+				"name": "grossValue",
+				"type": "String"
+			}
+		]
+	}
+}

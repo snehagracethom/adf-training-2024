@@ -1,0 +1,34 @@
+{
+	"name": "AzureSqlTable2_tyPE_CD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDB_DestinationDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SKTransType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BKTransType",
+				"type": "varchar"
+			},
+			{
+				"name": "TransDesc",
+				"type": "varchar"
+			},
+			{
+				"name": "stage_createdDate",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "type"
+		}
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"name": "Excel2_type",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Type",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DataSample.xlsx",
+				"container": "adfjulytraining"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "SKTransType",
+				"type": "String"
+			},
+			{
+				"name": "BKTransType",
+				"type": "String"
+			},
+			{
+				"name": "TransDesc",
+				"type": "String"
+			}
+		]
+	}
+}
